@@ -39,3 +39,23 @@ class Birthday(models.Model):
 
     def __str__(self):
         return f"{self.name} : {self.birthdate} : {self.age} : {self.next_bday}"
+
+
+class Weather(models.Model):
+    city = models.CharField(
+        max_length=64, blank=True, help_text="City is displayed in the bot message"
+    )
+    state = models.CharField(
+        max_length=64, blank=True, help_text="State is displayed in the bot message"
+    )
+    zipcode = models.CharField(
+        max_length=64,
+        help_text="Required to lookup the weather data on openweathermap.org API.",
+    )
+    country_code = models.CharField(
+        max_length=32,
+        help_text="2-digit country code. Required to lookup the weather data on openweathermap.org API.",
+    )
+
+    def __str__(self):
+        return f"{self.id} : {self.city}, {self.state}, {self.country_code}  {self.zipcode}"

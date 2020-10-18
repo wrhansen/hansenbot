@@ -4,7 +4,7 @@ from typing import Dict, Optional
 import requests
 from django.conf import settings
 
-from .models import Birthday
+from .models import Birthday, Weather
 
 BOT_INVOCATION = "!hb"
 
@@ -122,3 +122,46 @@ class DadJokeCommandBot(GroupMeBot):
         joke = response.json()["joke"]
 
         self.post_message(f"Dad Joke: {joke}")
+
+
+class WeatherCommandBot(GroupMeBot):
+    command = "weather"
+    help_text = "Returns current weather information"
+
+    def get_weather_by_zip(self, zip_code):
+        response = requests.get(
+            "https://api.openweathermap.org/data/2.5/weather",
+            params={
+                "zip": f"{zip_code},{country_code.lower()}",
+                "appid": settings.GROUPME["OPEN_WEATHER_API_KEY"],
+                "units": "imperial",
+            },
+        )
+        response.raise_for_status()
+        return response.json()
+
+    def execute(self):
+        weather_data = []
+        for weather in Weather.objects.all():
+            try:
+                api_data = self.get_weather_by_zip(
+                    weather.zipcode, weather.country_code
+                )
+            except requests.exceptions.HTTPError:
+                logger.warning(f"Couldn't lookup weather for: {weather}")
+
+            weather_data.append(
+                {
+                    "location": f"{weather.city}, {weather.state}",
+                    "description": api_data["weather"]["main"],
+                    "temp": api_data["main"]["temp"],
+                }
+            )
+
+        weather_string = "\n".join(
+            [
+                f"* {datum['location']} : {datum['temp']}°F -- {datum['description']}"
+                for datum in weather_data
+            ]
+        )
+        self.post_message(f"Weather:\n{weather_string}")
