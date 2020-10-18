@@ -17,9 +17,7 @@ import logging.config
 import os
 
 import envparse
-import sentry_sdk
 from django.utils.log import DEFAULT_LOGGING
-from sentry_sdk.integrations.django import DjangoIntegration
 
 env = envparse.Env()
 env.read_envfile()
@@ -57,7 +55,7 @@ INSTALLED_APPS = [
 INSTALLED_APPS += ["rest_framework"]
 
 # My Apps
-INSTALLED_APPS += ["user", "blog", "groupme"]
+INSTALLED_APPS += ["groupme"]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -100,7 +98,6 @@ DATABASES = {
         "USER": "postgres",
         "HOST": "db",
         "PORT": 5432,
-        "PASSWORD": env("POSTGRES_PASSWORD"),
     }
 }
 
@@ -143,13 +140,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "assets")]
 LOGGING_CONFIG = None
 LOGLEVEL = env("LOGLEVEL", default="info", cast=str).upper()
 
-sentry_sdk.init(
-    dsn=env("SENTRY_DSN", cast=str),
-    integrations=[DjangoIntegration()],
-    attach_stacktrace=True,
-    environment=env("SENTRY_ENVIRONMENT", default="development", cast=str),
-)
-
 logging.config.dictConfig(
     {
         "version": 1,
@@ -168,27 +158,16 @@ logging.config.dictConfig(
                 "formatter": "default",
                 "level": "DEBUG",
             },
-            # Add Handler for Sentry for `warning` and above
-            "sentry": {
-                "level": "WARNING",
-                "class": "sentry_sdk.integrations.logging.EventHandler",
-            },
             "django.server": DEFAULT_LOGGING["handlers"]["django.server"],
         },
         "loggers": {
             # default for all undefined Python modules
-            "": {"level": "INFO", "handlers": ["console", "sentry"]},
+            "": {"level": "INFO", "handlers": ["console"]},
             # Our application code
             "app": {
                 "level": LOGLEVEL,
-                "handlers": ["console", "sentry"],
-                # Avoid double logging because of root logger
-                "propagate": False,
-            },
-            # Prevent noisy modules from logging to Sentry
-            "noisy_module": {
-                "level": "ERROR",
                 "handlers": ["console"],
+                # Avoid double logging because of root logger
                 "propagate": False,
             },
             # Default runserver request logging
