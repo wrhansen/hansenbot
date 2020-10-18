@@ -1,0 +1,15 @@
+# Web Framework
+Django<2.3
+
+# DB
+psycopg2-binary>=2.7<3.0
+
+# WSGI
+gunicorn==20.0.4
+
+# GroupMe app
+djangorestframework==3.12.1
+requests==2.24.0
+
+# Heroku
+django_heroku==0.3.1
