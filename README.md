@@ -38,3 +38,4 @@ It is invoked in the following way:
 This command retrieves a dad joke at random from the https://icanhazdadjoke.com
 api and returns it to the group.
 
+### MORE TO COME!
