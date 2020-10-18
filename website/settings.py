@@ -133,49 +133,6 @@ STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "config", "www", "static")
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "assets")]
 
-
-LOGGING_CONFIG = None
-LOGLEVEL = os.environ.get("LOGLEVEL", "info").upper()
-
-logging.config.dictConfig(
-    {
-        "version": 1,
-        "disable_existing_loggers": False,
-        "formatters": {
-            "default": {
-                # exact format is not important, this is the minimum information
-                "format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s"
-            },
-            "django.server": DEFAULT_LOGGING["formatters"]["django.server"],
-        },
-        "handlers": {
-            # console logs to stderr
-            "console": {
-                "class": "logging.StreamHandler",
-                "formatter": "default",
-                "level": "DEBUG",
-            },
-            "django.server": DEFAULT_LOGGING["handlers"]["django.server"],
-        },
-        "loggers": {
-            # default for all undefined Python modules
-            "": {"level": "INFO", "handlers": ["console"]},
-            # Our application code
-            "app": {
-                "level": LOGLEVEL,
-                "handlers": ["console"],
-                # Avoid double logging because of root logger
-                "propagate": False,
-            },
-            # Default runserver request logging
-            "django.server": DEFAULT_LOGGING["loggers"]["django.server"],
-        },
-    }
-)
-
-AUTH_USER_MODEL = "user.User"
-
-
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
