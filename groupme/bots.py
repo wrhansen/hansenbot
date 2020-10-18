@@ -153,7 +153,7 @@ class WeatherCommandBot(GroupMeBot):
             weather_data.append(
                 {
                     "location": f"{weather.city}, {weather.state}",
-                    "description": api_data["weather"]["main"],
+                    "description": api_data["weather"][0]["main"],
                     "temp": api_data["main"]["temp"],
                 }
             )
