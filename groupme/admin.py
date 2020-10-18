@@ -7,11 +7,15 @@ class BirthdayAdmin(admin.ModelAdmin):
     list_display = ("name", "birthdate", "age", "next_bday")
 
 
-admin.site.register(Birthday, BirthdayAdmin)
-
-
 class WeatherAdmin(admin.ModelAdmin):
     list_display = ("city", "state", "zipcode", "country_code")
 
 
-admin.site.register(Weather, WeatherAdmin)
+class GroupMeBotAdminSite(admin.AdminSite):
+    site_header = "GroupMe Bot Admin"
+    site_title = "HansenBot"
+
+
+admin_site = GroupMeBotAdminSite(name="myadmin")
+admin_site.register(Birthday, BirthdayAdmin)
+admin_site.register(Weather, WeatherAdmin)
