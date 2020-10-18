@@ -142,6 +142,7 @@ REST_FRAMEWORK = {
 GROUPME = {
     "BOT_ID": os.environ["GROUPME_BOT_ID"],
     "ACCESS_TOKEN": os.environ["GROUPME_ACCESS_TOKEN"],
+    "OPEN_WEATHER_API_KEY": os.environ["GROUPME_OPEN_WEATHER_API_KEY"],
 }
 
 django_heroku.settings(locals())
