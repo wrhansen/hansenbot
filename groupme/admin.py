@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.contrib.auth.admin import GroupAdmin, UserAdmin
+from django.contrib.auth.models import Group, User
 
 from .models import Birthday, Weather
 
@@ -19,3 +21,7 @@ class GroupMeBotAdminSite(admin.AdminSite):
 admin_site = GroupMeBotAdminSite(name="myadmin")
 admin_site.register(Birthday, BirthdayAdmin)
 admin_site.register(Weather, WeatherAdmin)
+
+# Standard User/Group admin stuff
+admin_site.register(User, UserAdmin)
+admin_site.register(Group, GroupAdmin)
