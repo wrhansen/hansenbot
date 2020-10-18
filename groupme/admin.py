@@ -14,8 +14,9 @@ class WeatherAdmin(admin.ModelAdmin):
 
 
 class GroupMeBotAdminSite(admin.AdminSite):
-    site_header = "GroupMe Bot Admin"
+    site_header = "HansenBot Admin"
     site_title = "HansenBot"
+    index_title = "HansenBot"
 
 
 admin_site = GroupMeBotAdminSite(name="myadmin")
