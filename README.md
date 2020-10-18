@@ -38,4 +38,12 @@ It is invoked in the following way:
 This command retrieves a dad joke at random from the https://icanhazdadjoke.com
 api and returns it to the group.
 
-### MORE TO COME!
+### `weather` command
+
+Invoked in the following way:
+
+`!hb weather`
+
+This command retrieves current weather from openweathermap API for some locations
+setup in the database. This `Weather` location database can be setup in the
+admin portal.

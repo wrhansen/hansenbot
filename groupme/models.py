@@ -57,5 +57,8 @@ class Weather(models.Model):
         help_text="2-digit country code. Required to lookup the weather data on openweathermap.org API.",
     )
 
+    class Meta:
+        verbose_name_plural = "Weather"
+
     def __str__(self):
         return f"{self.id} : {self.city}, {self.state}, {self.country_code}  {self.zipcode}"
