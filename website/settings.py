@@ -16,11 +16,8 @@ import logging
 import logging.config
 import os
 
-import envparse
+import django_heroku
 from django.utils.log import DEFAULT_LOGGING
-
-env = envparse.Env()
-env.read_envfile()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -33,9 +30,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = "(c6q&p5zalqy_^5^e&l7yg$!qde2q6(@&eropgtawg!hjim%1+"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG", cast=bool, default=True)
+DEBUG = bool(os.environ.get("DEBUG", True))
 
-ALLOWED_HOSTS = env("ALLOWED_HOSTS", cast=list)
+ALLOWED_HOSTS = os.environ["ALLOWED_HOSTS"].split(",")
 
 SECURE_SSL_REDIRECT = False
 
@@ -138,7 +135,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "assets")]
 
 
 LOGGING_CONFIG = None
-LOGLEVEL = env("LOGLEVEL", default="info", cast=str).upper()
+LOGLEVEL = os.environ.get("LOGLEVEL", "info").upper()
 
 logging.config.dictConfig(
     {
@@ -187,6 +184,8 @@ REST_FRAMEWORK = {
 
 
 GROUPME = {
-    "BOT_ID": env("GROUPME_BOT_ID"),
-    "ACCESS_TOKEN": env("GROUPME_ACCESS_TOKEN"),
+    "BOT_ID": os.environ["GROUPME_BOT_ID"],
+    "ACCESS_TOKEN": os.environ["GROUPME_ACCESS_TOKEN"],
 }
+
+django_heroku.settings(locals())
