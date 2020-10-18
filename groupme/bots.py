@@ -128,7 +128,7 @@ class WeatherCommandBot(GroupMeBot):
     command = "weather"
     help_text = "Returns current weather information"
 
-    def get_weather_by_zip(self, zip_code):
+    def get_weather_by_zip(self, zip_code, country_code):
         response = requests.get(
             "https://api.openweathermap.org/data/2.5/weather",
             params={
