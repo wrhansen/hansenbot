@@ -92,15 +92,23 @@ class BirthdayCommandBot(GroupMeBot):
 
     def execute(self):
         birthday_list = [
-            (bday.name, bday.age, bday.next_bday, bday.birthdate)
+            (
+                bday.name,
+                bday.age,
+                bday.next_bday,
+                bday.birthdate,
+                bday.str_age,
+            )
             for bday in Birthday.objects.all()
         ]
 
-        (name, age, next_bday, birthdate) = min(birthday_list, key=lambda x: x[2])
+        (name, age, next_bday, birthdate, birthdate_str) = min(
+            birthday_list, key=lambda x: x[2]
+        )
         age += 1
 
         birthday_list_str = "\n".join(
-            f"    {b[0]} : {b[1]} years old ({b[3]})" for b in birthday_list
+            f"    {b[0]} : {b[4]} ({b[3]})" for b in birthday_list
         )
 
         message = f"""I know the following birthdays:
