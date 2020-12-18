@@ -102,7 +102,9 @@ class BirthdayCommandBot(GroupMeBot):
             for bday in Birthday.objects.all()
         ]
 
-        (name, age, next_bday, birthdate) = min(birthday_list, key=lambda x: x[2])
+        (name, age, next_bday, birthdate, birthdate_str) = min(
+            birthday_list, key=lambda x: x[2]
+        )
         age += 1
 
         birthday_list_str = "\n".join(
