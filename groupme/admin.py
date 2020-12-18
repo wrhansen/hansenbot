@@ -6,7 +6,7 @@ from .models import Birthday, Weather
 
 
 class BirthdayAdmin(admin.ModelAdmin):
-    list_display = ("name", "birthdate", "age", "next_bday")
+    list_display = ("name", "birthdate", "age", "next_bday", "str_age")
 
 
 class WeatherAdmin(admin.ModelAdmin):

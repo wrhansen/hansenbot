@@ -1,4 +1,5 @@
 import datetime
+from calendar import monthrange
 
 from django.db import models
 
@@ -18,6 +19,26 @@ class Birthday(models.Model):
             - self.birthdate.year
             - ((today.month, today.day) < (self.birthdate.month, self.birthdate.day))
         )
+
+    @property
+    def str_age(self) -> str:
+        milestone = "months old" if self.age < 2 else "years old"
+
+        age = self.age
+        if age < 2:
+            age = self.monthdelta(self.birthdate, datetime.date.today())
+        return f"{age} {milestone}"
+
+    def monthdelta(self, d1, d2):
+        delta = 0
+        while True:
+            mdays = monthrange(d1.year, d1.month)[1]
+            d1 += datetime.timedelta(days=mdays)
+            if d1 <= d2:
+                delta += 1
+            else:
+                break
+        return delta
 
     @property
     def next_bday(self):
