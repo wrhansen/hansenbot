@@ -1,6 +1,10 @@
+import logging
+
 from website import celery_app as app
 
 from .bots import ParseError, parse_command, registry
+
+logger = logging.getLogger(__name__)
 
 
 @app.task
