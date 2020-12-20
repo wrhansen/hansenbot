@@ -83,3 +83,8 @@ class Weather(models.Model):
 
     def __str__(self):
         return f"{self.id} : {self.city}, {self.state}, {self.country_code}  {self.zipcode}"
+
+
+class Countdown(models.Model):
+    event = models.CharField(max_length=255)
+    deadline = models.DateTimeField()
