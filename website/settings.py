@@ -45,6 +45,10 @@ LOGGING = {
         "handlers": ["console"],
         "level": "WARNING",
     },
+    "groupme": {
+        "handlers": ["console"],
+        "level": "INFO",
+    },
 }
 
 
