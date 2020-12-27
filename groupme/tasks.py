@@ -53,7 +53,7 @@ def birthday_check():
 app.conf.beat_schedule = {
     "countdown": {"task": "groupme.tasks.countdown_check", "schedule": 10.0},
     "birthdays": {
-        "task": "groupme.tasks.birthdays",
+        "task": "groupme.tasks.birthday_check",
         "schedule": daily_morning,
     },
 }
