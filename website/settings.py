@@ -164,4 +164,4 @@ CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
-django_heroku.settings(locals())
+django_heroku.settings(locals(), logging=False)
