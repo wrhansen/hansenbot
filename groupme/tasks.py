@@ -57,3 +57,4 @@ app.conf.beat_schedule = {
         "schedule": daily_morning,
     },
 }
+app.conf.timezone = "US/Eastern"
