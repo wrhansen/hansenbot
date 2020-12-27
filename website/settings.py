@@ -27,11 +27,31 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get("DEBUG", True))
+DEBUG = bool(int(os.environ.get("DEBUG", 1)))
 
 ALLOWED_HOSTS = os.environ["ALLOWED_HOSTS"].split(",")
 
 SECURE_SSL_REDIRECT = False
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "WARNING",
+    },
+    "loggers": {
+        "groupme": {
+            "handlers": ["console"],
+            "level": "INFO",
+        }
+    },
+}
 
 
 # Application definition
@@ -142,5 +162,13 @@ GROUPME = {
     "ACCESS_TOKEN": os.environ["GROUPME_ACCESS_TOKEN"],
     "OPEN_WEATHER_API_KEY": os.environ["GROUPME_OPEN_WEATHER_API_KEY"],
 }
+
+REDIS_URL = os.environ["REDIS_URL"]
+
+CELERY_BROKER_URL = REDIS_URL
+CELERY_RESULT_BACKEND = REDIS_URL
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_TASK_TIME_LIMIT = 30 * 60
 
 django_heroku.settings(locals())

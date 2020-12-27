@@ -6,6 +6,8 @@ os.environ.update(
         "GROUPME_BOT_ID": "",
         "GROUPME_ACCESS_TOKEN": "",
         "GROUPME_OPEN_WEATHER_API_KEY": "",
+        "REDIS_URL": "redis://",
+        "SECRET_KEY": "changeme",
     }
 )
 

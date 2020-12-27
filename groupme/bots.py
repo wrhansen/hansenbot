@@ -4,7 +4,7 @@ from typing import Dict, Optional
 import requests
 from django.conf import settings
 
-from .models import Birthday, Weather
+from .models import Birthday, Pet, Weather
 
 BOT_INVOCATION = "!hb"
 
@@ -173,3 +173,34 @@ class WeatherCommandBot(GroupMeBot):
             ]
         )
         self.post_message(f"Weather:\n{weather_string}")
+
+
+class PetCommandBot(GroupMeBot):
+    command = "pets"
+    help_text = "List information about the family's pets"
+
+    def execute(self):
+        pet_list = [
+            (
+                bday.name,
+                bday.age,
+                bday.next_bday,
+                bday.birthdate,
+                bday.str_age,
+            )
+            for bday in Pet.objects.all()
+        ]
+
+        (name, age, next_bday, birthdate, birthdate_str) = min(
+            pet_list, key=lambda x: x[2]
+        )
+        age += 1
+
+        pet_list_str = "\n".join(f"    {b[0]} : {b[4]} ({b[3]})" for b in pet_list)
+
+        message = f"""I know the following pets:
+{pet_list_str}
+
+Next upcoming birthday: {name} turns {age} in {next_bday} days!"""
+
+        self.post_message(message)

@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 
 from .bots import ParseError, parse_command, registry
 from .serializers import MessageSerializer
+from .tasks import handle_bot_message
 
 logger = logging.getLogger(__name__)
 
@@ -25,29 +26,6 @@ class HansenBotWebhook(APIView):
             )
             return Response({}, status=400)
 
-        try:
-            command, *args = parse_command(serializer.validated_data["text"])
-        except ParseError as e:
-            logger.info(
-                f"No command parsed from message. Request: {request.data}, validated_data: {serializer.validated_data} | ERROR: {e}",
-                extra={"request": request.data, "error": e},
-            )
-            return Response({}, status=400)
-
-        try:
-            Bot = registry[command]
-        except KeyError:
-            logger.info(
-                f"Unknown command `{command}`",
-                extra={
-                    "command": command,
-                    "args": args,
-                },
-            )
-
-            return Response({}, status=400)
-
-        bot = Bot(*args, **serializer.validated_data)
-        bot.execute()
+        handle_bot_message.delay(**serializer.validated_data)
 
         return Response({}, status=200)
