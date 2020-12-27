@@ -41,19 +41,17 @@ daily_morning = crontab(minute=0, hour=8)
 
 
 @app.task
-def countdown_check():
-    logger.info("Countdown Check Run!")
-
-
-@app.task
-def birthday_check():
-    pass
+def morning_digest():
+    """
+    Daily morning routine that checks for upcoming birthdays and countdowns and
+    updates the family on what to expect for the day.
+    """
+    logger.info("morning_digest() run!")
 
 
 app.conf.beat_schedule = {
-    "countdown": {"task": "groupme.tasks.countdown_check", "schedule": 10.0},
-    "birthdays": {
-        "task": "groupme.tasks.birthday_check",
+    "morning_digest": {
+        "task": "groupme.tasks.morning_digest",
         "schedule": daily_morning,
     },
 }
