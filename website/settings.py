@@ -38,6 +38,7 @@ LOGGING = {
     "disable_existing_loggers": False,
     "handlers": {
         "console": {
+            "level": "INFO",
             "class": "logging.StreamHandler",
         },
     },
@@ -46,10 +47,7 @@ LOGGING = {
         "level": "WARNING",
     },
     "loggers": {
-        "groupme": {
-            "handlers": ["console"],
-            "level": "INFO",
-        }
+        "groupme": {"handlers": ["console"], "level": "INFO", "propagate": False}
     },
 }
 

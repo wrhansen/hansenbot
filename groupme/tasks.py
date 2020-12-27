@@ -43,7 +43,6 @@ daily_morning = crontab(minute=0, hour=8)
 @app.task
 def countdown_check():
     logger.info("Countdown Check Run!")
-    print("COUNTDOWN PRINT RUN!")
 
 
 @app.task
