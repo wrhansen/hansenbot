@@ -1,15 +1,12 @@
 import datetime
+import typing
 from calendar import monthrange
 
 from django.db import models
 
 
-class Birthday(models.Model):
-    name = models.CharField(max_length=64)
-    birthdate = models.DateField(db_index=True)
-
-    class Meta:
-        ordering = ["birthdate"]
+class BirthdayMixin:
+    birthdate: typing.Optional[datetime.date] = None
 
     @property
     def age(self):
@@ -58,6 +55,14 @@ class Birthday(models.Model):
         timedelta = next_birthday - today
         return timedelta.days
 
+
+class Birthday(models.Model, BirthdayMixin):
+    name = models.CharField(max_length=64)
+    birthdate = models.DateField(db_index=True)
+
+    class Meta:
+        ordering = ["birthdate"]
+
     def __str__(self):
         return f"{self.name} : {self.birthdate} : {self.age} : {self.next_bday}"
 
@@ -88,3 +93,19 @@ class Weather(models.Model):
 class Countdown(models.Model):
     event = models.CharField(max_length=255)
     deadline = models.DateTimeField()
+
+
+class Pet(models.Model, BirthdayMixin):
+    PET_DOG = "dog"
+    PET_CAT = "cat"
+    PET_TYPES = [
+        (PET_DOG, "Dog"),
+        (PET_CAT, "Cat"),
+    ]
+
+    name = models.CharField(max_length=64)
+    birthdate = models.DateField(db_index=True)
+    type = models.CharField(max_length=64, choices=PET_TYPES)
+
+    def __str__(self):
+        return f"{self.name} : {self.type} : {self.birthdate} : {self.age} : {self.next_bday}"
