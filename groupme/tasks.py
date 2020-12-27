@@ -1,5 +1,6 @@
 import logging
 
+from celery.schedules import crontab
 from website import celery_app as app
 
 from .bots import ParseError, parse_command, registry
@@ -34,3 +35,25 @@ def handle_bot_message(**data):
 
     bot = Bot(*args, **data)
     bot.execute()
+
+
+daily_morning = crontab(minute=0, hour=8)
+
+
+@app.task
+def countdown_check():
+    logger.info("Countdown Check Run!")
+
+
+@app.task
+def birthday_check():
+    pass
+
+
+app.conf.beat_schedule = {
+    "countdown": {"task": "groupme.tasks.countdown_check", "schedule": 10.0},
+    "birthdays": {
+        "task": "groupme.tasks.birthdays",
+        "schedule": daily_morning,
+    },
+}
