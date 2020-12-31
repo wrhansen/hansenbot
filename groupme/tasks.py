@@ -69,7 +69,7 @@ def morning_digest():
 app.conf.beat_schedule = {
     "morning_digest": {
         "task": "groupme.tasks.morning_digest",
-        "schedule": 30,
+        "schedule": daily_morning,
     },
 }
 app.conf.timezone = "America/Detroit"
