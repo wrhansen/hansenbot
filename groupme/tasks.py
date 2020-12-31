@@ -3,7 +3,7 @@ import logging
 from celery.schedules import crontab
 from website import celery_app as app
 
-from .bots import ParseError, parse_command, registry
+from .bots import GroupMeBot, ParseError, parse_command, registry
 
 logger = logging.getLogger(__name__)
 
@@ -47,12 +47,29 @@ def morning_digest():
     updates the family on what to expect for the day.
     """
     logger.info("morning_digest() run!")
+    messages = []
+    for Bot in registry.values():
+        bot = Bot()
+        if hasattr(bot, "digest"):
+            try:
+                messages.append(bot.digest())
+            except Exception as e:
+                logger.exception(
+                    "Error with bot digest", exc_info=True, extra={"bot_class": Bot}
+                )
+
+    if messages:
+        bot = GroupMeBot()
+        messages_str = "\n".join(messages)
+        bot_message = f"Morning Hansen Family here is what you need to know today:\n\n{messages_str}"
+        bot.post_message(bot_message)
 
 
+# Celery Beat schedule for the groupme app.
 app.conf.beat_schedule = {
     "morning_digest": {
         "task": "groupme.tasks.morning_digest",
-        "schedule": daily_morning,
+        "schedule": 30,
     },
 }
 app.conf.timezone = "America/Detroit"

@@ -90,6 +90,23 @@ class BirthdayCommandBot(GroupMeBot):
     command = "birthday"
     help_text = "Lists family birthdays"
 
+    def digest(self):
+        birthday_list = [
+            (
+                bday.name,
+                bday.age,
+                bday.next_bday,
+                bday.birthdate,
+                bday.str_age,
+            )
+            for bday in Birthday.objects.all()
+        ]
+
+        (name, age, next_bday, birthdate, birthdate_str) = min(
+            birthday_list, key=lambda x: x[2]
+        )
+        return f"Next upcoming birthday: {name} turns {age+1} in {next_bday} days!"
+
     def execute(self):
         birthday_list = [
             (
@@ -148,7 +165,7 @@ class WeatherCommandBot(GroupMeBot):
         response.raise_for_status()
         return response.json()
 
-    def execute(self):
+    def get_weather_data_string(self):
         weather_data = []
         for weather in Weather.objects.all():
             try:
@@ -172,6 +189,13 @@ class WeatherCommandBot(GroupMeBot):
                 for datum in weather_data
             ]
         )
+        return weather_string
+
+    def digest(self):
+        return self.get_weather_data_string()
+
+    def execute(self):
+        weather_string = self.get_weather_data_string()
         self.post_message(f"Weather:\n{weather_string}")
 
 
