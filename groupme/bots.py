@@ -105,7 +105,7 @@ class BirthdayCommandBot(GroupMeBot):
         (name, age, next_bday, birthdate, birthdate_str) = min(
             birthday_list, key=lambda x: x[2]
         )
-        return f"Next upcoming birthday: {name} turns {age+1} in {next_bday} days!"
+        return f"Birthdays:\nNext upcoming birthday: {name} turns {age+1} in {next_bday} days!"
 
     def execute(self):
         birthday_list = [
@@ -192,7 +192,7 @@ class WeatherCommandBot(GroupMeBot):
         return weather_string
 
     def digest(self):
-        return self.get_weather_data_string()
+        return f"Weather:\n{self.get_weather_data_string()}"
 
     def execute(self):
         weather_string = self.get_weather_data_string()

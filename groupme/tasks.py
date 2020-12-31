@@ -60,7 +60,7 @@ def morning_digest():
 
     if messages:
         bot = GroupMeBot()
-        messages_str = "\n".join(messages)
+        messages_str = "\n\n".join(messages)
         bot_message = f"Morning Hansen Family here is what you need to know today:\n\n{messages_str}"
         bot.post_message(bot_message)
 
