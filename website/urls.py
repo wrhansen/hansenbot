@@ -27,7 +27,7 @@ urlpatterns = [
     url(
         r"^admin/statuscheck/",
         include(
-            ("celerybeat_status.urls", "celerybeat_status"),
+            ("celerybeat_status.urls", "groupme"),
             namespace="celerybeat_status",
         ),
     ),
