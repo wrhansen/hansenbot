@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls import url
 from django.contrib import admin
 from django.urls import include, path
 from groupme.admin import admin_site
@@ -23,12 +24,11 @@ urlpatterns = [
     path("admin/", admin_site.urls, name="admin"),
     path("", views.index, name="index"),
     path("groupme/", include("groupme.urls")),
-    path(
-        "admin/statuscheck/",
+    url(
+        r"^admin/statuscheck/",
         include(
             "celerybeat_status.urls",
             namespace="celerybeat_status",
-            app_name="celerybeat_status",
         ),
     ),
 ]
