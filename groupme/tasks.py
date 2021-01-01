@@ -6,6 +6,7 @@ from website import celery_app as app
 from .bots import GroupMeBot, ParseError, parse_command, registry
 
 logger = logging.getLogger(__name__)
+app.conf.update(timezone="America/Detroit")
 
 
 @app.task
@@ -38,6 +39,7 @@ def handle_bot_message(**data):
 
 
 daily_morning = crontab(minute=0, hour=8)
+every_minute = crontab()
 
 
 @app.task
@@ -69,7 +71,6 @@ def morning_digest():
 app.conf.beat_schedule = {
     "morning_digest": {
         "task": "groupme.tasks.morning_digest",
-        "schedule": daily_morning,
+        "schedule": every_minute,
     },
 }
-app.conf.timezone = "America/Detroit"
