@@ -20,3 +20,4 @@ freezegun==1.0.0
 # Async
 celery==5.0.1
 redis==3.5.3
+django-celerybeat-status==0.0.10
