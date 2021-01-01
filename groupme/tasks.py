@@ -40,6 +40,7 @@ def handle_bot_message(**data):
 
 daily_morning = crontab(minute=0, hour=8)
 every_minute = crontab()
+afternoon = crontab(minute=0, hour=13)
 
 
 @app.task
@@ -71,6 +72,6 @@ def morning_digest():
 app.conf.beat_schedule = {
     "morning_digest": {
         "task": "groupme.tasks.morning_digest",
-        "schedule": every_minute,
+        "schedule": afternoon,
     },
 }
