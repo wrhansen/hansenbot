@@ -25,6 +25,6 @@ urlpatterns = [
     path("groupme/", include("groupme.urls")),
     path(
         "admin/statuscheck/",
-        include("celerybeat_status.urls", namespce="celerybeat_status"),
+        include("celerybeat_status.urls", namespace="celerybeat_status"),
     ),
 ]
