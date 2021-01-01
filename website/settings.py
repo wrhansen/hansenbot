@@ -60,7 +60,10 @@ INSTALLED_APPS = [
 ]
 
 # Third-party plugins
-INSTALLED_APPS += ["rest_framework"]
+INSTALLED_APPS += [
+    "rest_framework",
+    "celerybeat_status",
+]
 
 # My Apps
 INSTALLED_APPS += ["groupme"]

@@ -23,4 +23,8 @@ urlpatterns = [
     path("admin/", admin_site.urls, name="admin"),
     path("", views.index, name="index"),
     path("groupme/", include("groupme.urls")),
+    path(
+        "admin/statuscheck/",
+        include("celerybeat_status.urls", namespce="celerybeat_status"),
+    ),
 ]
