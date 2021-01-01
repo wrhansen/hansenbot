@@ -21,9 +21,6 @@ from groupme.admin import admin_site
 from . import views
 
 urlpatterns = [
-    path("admin/", admin_site.urls, name="admin"),
-    path("", views.index, name="index"),
-    path("groupme/", include("groupme.urls")),
     url(
         r"^admin/statuscheck/",
         include(
@@ -31,4 +28,7 @@ urlpatterns = [
             namespace="celerybeat_status",
         ),
     ),
+    path("admin/", admin_site.urls, name="admin"),
+    path("", views.index, name="index"),
+    path("groupme/", include("groupme.urls")),
 ]
