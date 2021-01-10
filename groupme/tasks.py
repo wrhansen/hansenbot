@@ -72,6 +72,6 @@ def morning_digest():
 app.conf.beat_schedule = {
     "morning_digest": {
         "task": "groupme.tasks.morning_digest",
-        "schedule": every_minute,
+        "schedule": daily_morning,
     },
 }
