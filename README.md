@@ -47,3 +47,36 @@ Invoked in the following way:
 This command retrieves current weather from openweathermap API for some locations
 setup in the database. This `Weather` location database can be setup in the
 admin portal.
+
+# Heroku Recipes
+
+## Access to bash shell
+
+Run the command:
+
+```
+$ heroku run -a <app-name> bash
+```
+
+This will get you a bash prompt into your heroku container so that you can do
+stuff like run migrations and other administrative stuff.
+
+## Run Workers
+
+Once you setup selery and provision the heroku-redis through the heroku settings,
+you need to start up the worker with the following command:
+
+```
+$ heroku ps:scale worker=1 -a <app-name>
+```
+
+## View logs
+
+To view logs for your app, just run the following command:
+
+```
+$ heroku logs -a <app-name>
+```
+
+You can additionally add a `--tail` flag to block the shell, and continue to
+print logs to the shell.
