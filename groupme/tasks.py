@@ -69,16 +69,10 @@ def morning_digest():
         bot.post_message(bot_message)
 
 
-@app.task
-def dont_sleep():
-    logger.info("dont_sleep!")
-
-
 # Celery Beat schedule for the groupme app.
 app.conf.beat_schedule = {
     "morning_digest": {
         "task": "groupme.tasks.morning_digest",
         "schedule": daily_morning,
     },
-    "dont_sleep": {"task": "groupme.tasks.dont_sleep", "schedule": every_30_minutes},
 }

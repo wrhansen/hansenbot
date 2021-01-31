@@ -20,6 +20,3 @@ freezegun==1.0.0
 # Async
 celery==5.0.1
 redis==3.5.3
-
-# Celery beat -> Redis support
-celery-redbeat==2.0.0
