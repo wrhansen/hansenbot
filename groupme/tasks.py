@@ -40,6 +40,7 @@ def handle_bot_message(**data):
 
 daily_morning = crontab(minute=0, hour=8)
 every_minute = crontab()
+every_30_minutes = crontab(minute="*/30")
 afternoon = crontab(minute=0, hour=13)
 
 
@@ -70,7 +71,7 @@ def morning_digest():
 
 @app.task
 def dont_sleep():
-    pass
+    logger.info("dont_sleep!")
 
 
 # Celery Beat schedule for the groupme app.
@@ -79,5 +80,5 @@ app.conf.beat_schedule = {
         "task": "groupme.tasks.morning_digest",
         "schedule": daily_morning,
     },
-    "dont_sleep": {"task": "groupme.tasks.dont_sleep", "schedule": every_minute},
+    "dont_sleep": {"task": "groupme.tasks.dont_sleep", "schedule": every_30_minutes},
 }
