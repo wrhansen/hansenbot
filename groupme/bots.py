@@ -105,7 +105,10 @@ class BirthdayCommandBot(GroupMeBot):
         (name, age, next_bday, birthdate, birthdate_str) = min(
             birthday_list, key=lambda x: x[2]
         )
-        return f"Birthdays:\nNext upcoming birthday: {name} turns {age+1} in {next_bday} days!"
+        if next_bday == 0:
+            return f"Happy Birthday! {name} turns {age} today!"
+        else:
+            return f"Birthdays:\nNext upcoming birthday: {name} turns {age+1} in {next_bday} days!"
 
     def execute(self):
         birthday_list = [
@@ -122,16 +125,22 @@ class BirthdayCommandBot(GroupMeBot):
         (name, age, next_bday, birthdate, birthdate_str) = min(
             birthday_list, key=lambda x: x[2]
         )
-        age += 1
 
         birthday_list_str = "\n".join(
             f"    {b[0]} : {b[4]} ({b[3]})" for b in birthday_list
         )
 
+        if next_bday == 0:
+            next_bday_message = f"Happy Birthday! {name} turns {age} today!"
+        else:
+            next_bday_message = (
+                f"Next upcoming birthday: {name} turns {age+1} in {next_bday} days!"
+            )
+
         message = f"""I know the following birthdays:
 {birthday_list_str}
 
-Next upcoming birthday: {name} turns {age} in {next_bday} days!"""
+{next_bday_message}"""
 
         self.post_message(message)
 
