@@ -227,13 +227,18 @@ class PetCommandBot(GroupMeBot):
         (name, age, next_bday, birthdate, birthdate_str) = min(
             pet_list, key=lambda x: x[2]
         )
-        age += 1
+        if next_bday == 0:
+            next_bday_message = f"Happy Birthday! {name} turns {age} today!"
+        else:
+            next_bday_message = (
+                f"Next upcoming birthday: {name} turns {age+1} in {next_bday} days!"
+            )
 
         pet_list_str = "\n".join(f"    {b[0]} : {b[4]} ({b[3]})" for b in pet_list)
 
         message = f"""I know the following pets:
 {pet_list_str}
 
-Next upcoming birthday: {name} turns {age} in {next_bday} days!"""
+{next_bday_message}!"""
 
         self.post_message(message)
