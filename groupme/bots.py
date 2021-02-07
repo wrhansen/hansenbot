@@ -107,8 +107,10 @@ class BirthdayCommandBot(GroupMeBot):
         )
         if next_bday == 0:
             return f"Happy Birthday! {name} turns {age} today!"
+        elif next_bday < 15:
+            return f"Birthdays: \nNext upcoming birthday: {name} turns {age+1} in {next_bday} days!"
         else:
-            return f"Birthdays:\nNext upcoming birthday: {name} turns {age+1} in {next_bday} days!"
+            return ""
 
     def execute(self):
         birthday_list = [

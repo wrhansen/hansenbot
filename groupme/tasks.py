@@ -56,7 +56,9 @@ def morning_digest():
         bot = Bot()
         if hasattr(bot, "digest"):
             try:
-                messages.append(bot.digest())
+                message = bot.digest()
+                if message:
+                    messages.append(bot.digest())
             except Exception as e:
                 logger.exception(
                     "Error with bot digest", exc_info=True, extra={"bot_class": Bot}
