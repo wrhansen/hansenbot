@@ -1,3 +1,4 @@
+import datetime
 import logging
 from typing import Dict, Optional
 
@@ -90,8 +91,8 @@ class BirthdayCommandBot(GroupMeBot):
     command = "birthday"
     help_text = "Lists family birthdays"
 
-    def digest(self):
-        birthday_list = [
+    def _get_birthday_list(self):
+        return [
             (
                 bday.name,
                 bday.age,
@@ -102,30 +103,30 @@ class BirthdayCommandBot(GroupMeBot):
             for bday in Birthday.objects.all()
         ]
 
-        (name, age, next_bday, birthdate, birthdate_str) = min(
-            birthday_list, key=lambda x: x[2]
+    def next_birthday(self, birthday_list):
+        return min(birthday_list, key=lambda x: x[2])
+
+    def digest(self):
+        birthday_list = self._get_birthday_list()
+
+        (name, age, next_bday, birthdate, birthdate_str) = self.next_birthday(
+            birthday_list
         )
         if next_bday == 0:
-            return f"Happy Birthday! {name} turns {age} today!"
+            if birthdate.year == datetime.now().year:  # Born today
+                return f"{name} is born today! Welcome to the family!"
+            else:
+                return f"Happy Birthday! {name} turns {age} today!"
         elif next_bday < 15:
             return f"Birthdays: \nNext upcoming birthday: {name} turns {age+1} in {next_bday} days!"
         else:
             return ""
 
     def execute(self):
-        birthday_list = [
-            (
-                bday.name,
-                bday.age,
-                bday.next_bday,
-                bday.birthdate,
-                bday.str_age,
-            )
-            for bday in Birthday.objects.all()
-        ]
+        birthday_list = self._get_birthday_list()
 
-        (name, age, next_bday, birthdate, birthdate_str) = min(
-            birthday_list, key=lambda x: x[2]
+        (name, age, next_bday, birthdate, birthdate_str) = self.next_birthday(
+            birthday_list
         )
 
         birthday_list_str = "\n".join(
@@ -133,7 +134,10 @@ class BirthdayCommandBot(GroupMeBot):
         )
 
         if next_bday == 0:
-            next_bday_message = f"Happy Birthday! {name} turns {age} today!"
+            if birthdate.year == datetime.now().year:  # Born today
+                return f"{name} is born today! Welcome to the family!"
+            else:
+                next_bday_message = f"Happy Birthday! {name} turns {age} today!"
         else:
             next_bday_message = (
                 f"Next upcoming birthday: {name} turns {age+1} in {next_bday} days!"

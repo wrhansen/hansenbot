@@ -6,7 +6,7 @@ from django.db import models
 
 
 class BirthdayMixin:
-    birthdate: typing.Optional[datetime.date] = None
+    birthdate: datetime.date
 
     @property
     def age(self):
@@ -24,6 +24,16 @@ class BirthdayMixin:
         age = self.age
         if age < 2:
             age = self.monthdelta(self.birthdate, datetime.date.today())
+            if age == 0:  # New born age milestones
+                days = (datetime.date.today() - self.birthdate).days
+                if days % 7 == 0:
+                    age = days // 7
+                    s = "s" if age > 1 else ""
+                    milestone = f"week{s}"
+                else:
+                    age = days
+                    s = "s" if age > 1 else ""
+                    milestone = f"day{s}"
         return f"{age} {milestone}"
 
     def monthdelta(self, d1, d2):
