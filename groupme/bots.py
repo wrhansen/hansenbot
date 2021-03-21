@@ -90,8 +90,8 @@ class BirthdayCommandBot(GroupMeBot):
     command = "birthday"
     help_text = "Lists family birthdays"
 
-    def digest(self):
-        birthday_list = [
+    def _get_birthday_list(self):
+        return [
             (
                 bday.name,
                 bday.age,
@@ -101,6 +101,9 @@ class BirthdayCommandBot(GroupMeBot):
             )
             for bday in Birthday.objects.all()
         ]
+
+    def digest(self):
+        birthday_list = self._get_birthday_list()
 
         (name, age, next_bday, birthdate, birthdate_str) = min(
             birthday_list, key=lambda x: x[2]
@@ -113,16 +116,7 @@ class BirthdayCommandBot(GroupMeBot):
             return ""
 
     def execute(self):
-        birthday_list = [
-            (
-                bday.name,
-                bday.age,
-                bday.next_bday,
-                bday.birthdate,
-                bday.str_age,
-            )
-            for bday in Birthday.objects.all()
-        ]
+        birthday_list = self._get_birthday_list()
 
         (name, age, next_bday, birthdate, birthdate_str) = min(
             birthday_list, key=lambda x: x[2]
