@@ -1,3 +1,4 @@
+import datetime
 import logging
 from typing import Dict, Optional
 
@@ -112,7 +113,10 @@ class BirthdayCommandBot(GroupMeBot):
             birthday_list
         )
         if next_bday == 0:
-            return f"Happy Birthday! {name} turns {age} today!"
+            if birthdate.year == datetime.now().year:  # Born today
+                return f"{name} is born today! Welcome to the family!"
+            else:
+                return f"Happy Birthday! {name} turns {age} today!"
         elif next_bday < 15:
             return f"Birthdays: \nNext upcoming birthday: {name} turns {age+1} in {next_bday} days!"
         else:
@@ -130,7 +134,10 @@ class BirthdayCommandBot(GroupMeBot):
         )
 
         if next_bday == 0:
-            next_bday_message = f"Happy Birthday! {name} turns {age} today!"
+            if birthdate.year == datetime.now().year:  # Born today
+                return f"{name} is born today! Welcome to the family!"
+            else:
+                next_bday_message = f"Happy Birthday! {name} turns {age} today!"
         else:
             next_bday_message = (
                 f"Next upcoming birthday: {name} turns {age+1} in {next_bday} days!"
