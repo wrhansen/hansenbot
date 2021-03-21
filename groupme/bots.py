@@ -102,11 +102,14 @@ class BirthdayCommandBot(GroupMeBot):
             for bday in Birthday.objects.all()
         ]
 
+    def next_birthday(self, birthday_list):
+        return min(birthday_list, key=lambda x: x[2])
+
     def digest(self):
         birthday_list = self._get_birthday_list()
 
-        (name, age, next_bday, birthdate, birthdate_str) = min(
-            birthday_list, key=lambda x: x[2]
+        (name, age, next_bday, birthdate, birthdate_str) = self.next_birthday(
+            birthday_list
         )
         if next_bday == 0:
             return f"Happy Birthday! {name} turns {age} today!"
@@ -118,8 +121,8 @@ class BirthdayCommandBot(GroupMeBot):
     def execute(self):
         birthday_list = self._get_birthday_list()
 
-        (name, age, next_bday, birthdate, birthdate_str) = min(
-            birthday_list, key=lambda x: x[2]
+        (name, age, next_bday, birthdate, birthdate_str) = self.next_birthday(
+            birthday_list
         )
 
         birthday_list_str = "\n".join(
