@@ -28,10 +28,12 @@ class BirthdayMixin:
                 days = (datetime.date.today() - self.birthdate).days
                 if days % 7 == 0:
                     age = days // 7
-                    milestone = "weeks"
+                    s = "s" if age > 1 else ""
+                    milestone = f"week{s}"
                 else:
                     age = days
-                    milestone = "days"
+                    s = "s" if age > 1 else ""
+                    milestone = f"day{s}"
         return f"{age} {milestone}"
 
     def monthdelta(self, d1, d2):
