@@ -134,7 +134,7 @@ class BirthdayCommandBot(GroupMeBot):
         )
 
         if next_bday == 0:
-            if birthdate.year == datetime.now().year:  # Born today
+            if birthdate.year == datetime.datetime.now().year:  # Born today
                 return f"{name} is born today! Welcome to the family!"
             else:
                 next_bday_message = f"Happy Birthday! {name} turns {age} today!"
