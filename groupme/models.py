@@ -29,21 +29,19 @@ class BirthdayMixin:
                 days = (today - self.birthdate).days
                 if today.day == self.birthdate.day:  # Months milestone
                     age = days // 30
-                    s = "s" if age > 1 else ""
-                    if age == 12:  # let's say 1 year instead of 12 months
+                    if age % 12:  # let's say 1 year instead of 12 months
                         milestone = "year"
-                        age = 1
+                        age = age // 12
                     else:
-                        milestone = f"month{s}"
+                        milestone = f"month"
                 elif days % 7 == 0:  # Weeks milestone
                     age = days // 7
-                    s = "s" if age > 1 else ""
-                    milestone = f"week{s}"
+                    milestone = f"week"
                 else:
                     age = days
-                    s = "s" if age > 1 else ""
-                    milestone = f"day{s}"
-        return f"{age} {milestone} old"
+                    milestone = f"day"
+        s = "s" if age > 1 else ""
+        return f"{age} {milestone}{s} old"
 
     def monthdelta(self, d1, d2):
         delta = 0
