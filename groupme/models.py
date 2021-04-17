@@ -30,7 +30,6 @@ class BirthdayMixin:
                 if today.day == self.birthdate.day:  # Months milestone
                     age = days // 30
                     if age % 12 == 0:  # let's say 1 year instead of 12 months
-                        milestone = "year"
                         age = age // 12
                     else:
                         milestone = "month"
