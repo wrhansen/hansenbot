@@ -20,29 +20,25 @@ class BirthdayMixin:
     @property
     def str_age(self) -> str:
         milestone = "year"
-
         age = self.age
+
+        # Less than 2 years old -- infant/toddler milestones
         if age < 2:
             today = datetime.date.today()
-            age = self.monthdelta(self.birthdate, today)
-            if age == 0:  # New born age milestones
+            age_months = self.monthdelta(self.birthdate, today)
+
+            # Less than month old --New born age milestones
+            if age_months == 0:
                 days = (today - self.birthdate).days
-                if today.day == self.birthdate.day:  # Months milestone
-                    if (
-                        today.month == self.birthdate.month
-                        and today.year != self.birthdate.year
-                    ):  # let's say 1 year instead of 12 months
-                        age = 1
-                        milestone = "year"
-                    else:
-                        age = days // 30
-                        milestone = "month"
-                elif days < 30:  # Do days for any child under
-                    age = days
-                    milestone = "day"
-                else:  # Weeks milestone
-                    age = days // 7
+                if days % 7 == 0:
                     milestone = "week"
+                    age = days // 7
+                else:
+                    milestone = "day"
+                    age = days
+            else:
+                age = age_months
+                milestone = "month"
         s = "s" if age > 1 else ""
         return f"{age} {milestone}{s} old"
 

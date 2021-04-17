@@ -80,3 +80,15 @@ $ heroku logs -a <app-name>
 
 You can additionally add a `--tail` flag to block the shell, and continue to
 print logs to the shell.
+
+
+## Run tests (locally)
+
+To run tests locally, just run the following command:
+
+```
+$ ./manage.py test --settings=website.local_settings
+```
+
+NOTE: the `website.local_settings` option is necessary for running the tests
+in the right environment.

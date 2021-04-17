@@ -21,9 +21,30 @@ class BirthdayTestCase(TestCase):
             name="Wesley Hansen", birthdate=date(2018, 8, 1)
         )
 
+        # Infant birthdays
+        cls.infant1 = Birthday.objects.create(
+            name="Wesley Hansen", birthdate=date(2021, 3, 17)
+        )
+        cls.infant2 = Birthday.objects.create(
+            name="Wesley Hansen", birthdate=date(2021, 3, 27)
+        )
+        cls.infant3 = Birthday.objects.create(
+            name="Wesley Hansen", birthdate=date(2021, 3, 28)
+        )
+        cls.infant4 = Birthday.objects.create(
+            name="Wesley Hansen", birthdate=date(2021, 4, 3)
+        )
+
     @freeze_time("2020-12-17")
     def test_month_milestones(self):
         self.assertEqual(self.bday1.str_age, "4 months old")
         self.assertEqual(self.bday2.str_age, "16 months old")
         self.assertEqual(self.bday3.str_age, "35 years old")
         self.assertEqual(self.bday4.str_age, "2 years old")
+
+    @freeze_time("2021-04-17")
+    def test_infant_milestones(self):
+        self.assertEqual(self.infant1.str_age, "1 month old")
+        self.assertEqual(self.infant2.str_age, "3 weeks old")
+        self.assertEqual(self.infant3.str_age, "20 days old")
+        self.assertEqual(self.infant4.str_age, "2 weeks old")
