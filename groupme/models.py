@@ -19,14 +19,23 @@ class BirthdayMixin:
 
     @property
     def str_age(self) -> str:
-        milestone = "months old" if self.age < 2 else "years old"
+        milestone = "years"
 
         age = self.age
         if age < 2:
-            age = self.monthdelta(self.birthdate, datetime.date.today())
+            today = datetime.date.today()
+            age = self.monthdelta(self.birthdate, today)
             if age == 0:  # New born age milestones
-                days = (datetime.date.today() - self.birthdate).days
-                if days % 7 == 0:
+                days = (today - self.birthdate).days
+                if today.day == self.birthdate.day:  # Months milestone
+                    age = days // 30
+                    s = "s" if age > 1 else ""
+                    if age == 12:  # let's say 1 year instead of 12 months
+                        milestone = "year"
+                        age = 1
+                    else:
+                        milestone = f"month{s}"
+                elif days % 7 == 0:  # Weeks milestone
                     age = days // 7
                     s = "s" if age > 1 else ""
                     milestone = f"week{s}"
@@ -34,7 +43,7 @@ class BirthdayMixin:
                     age = days
                     s = "s" if age > 1 else ""
                     milestone = f"day{s}"
-        return f"{age} {milestone}"
+        return f"{age} {milestone} old"
 
     def monthdelta(self, d1, d2):
         delta = 0
