@@ -28,17 +28,21 @@ class BirthdayMixin:
             if age == 0:  # New born age milestones
                 days = (today - self.birthdate).days
                 if today.day == self.birthdate.day:  # Months milestone
-                    age = days // 30
-                    if age % 12 == 0:  # let's say 1 year instead of 12 months
-                        age = age // 12
+                    if (
+                        today.month == self.birthdate.month
+                        and today.year != self.birthdate.year
+                    ):  # let's say 1 year instead of 12 months
+                        age = 1
+                        milestone = "year"
                     else:
+                        age = days // 30
                         milestone = "month"
-                elif days % 7 == 0:  # Weeks milestone
-                    age = days // 7
-                    milestone = "week"
-                else:
+                elif days < 30:  # Do days for any child under
                     age = days
                     milestone = "day"
+                else:  # Weeks milestone
+                    age = days // 7
+                    milestone = "week"
         s = "s" if age > 1 else ""
         return f"{age} {milestone}{s} old"
 
