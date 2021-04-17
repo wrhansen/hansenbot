@@ -19,7 +19,7 @@ class BirthdayMixin:
 
     @property
     def str_age(self) -> str:
-        milestone = "years"
+        milestone = "year"
 
         age = self.age
         if age < 2:
