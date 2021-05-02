@@ -10,7 +10,7 @@ class BirthdayAdmin(admin.ModelAdmin):
 
 
 class WeatherAdmin(admin.ModelAdmin):
-    list_display = ("city", "state", "zipcode", "country_code")
+    list_display = ("city", "state", "zipcode", "country_code", "latitude", "longitude")
 
 
 class PetAdmin(admin.ModelAdmin):
