@@ -187,12 +187,13 @@ class WeatherCommandBot(GroupMeBot):
                 weather_data.append(
                     {
                         "location": f"{weather.city}, {weather.state}",
-                        "description": api_data["weather"][0]["main"],
-                        "temp": api_data["main"]["temp"],
+                        "description": weather_format,
                     }
                 )
 
-        weather_string = "\n".join([f"* {datum}" for datum in weather_data])
+        weather_string = "\n".join(
+            [f"* {datum['location']}: {datum['description']}" for datum in weather_data]
+        )
         return weather_string
 
     def digest(self):
