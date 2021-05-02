@@ -1,5 +1,6 @@
 import enum
 
+import requests
 from django.template.loader import render_to_string
 
 # All available weather codes
