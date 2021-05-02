@@ -98,6 +98,8 @@ class Weather(models.Model):
         max_length=32,
         help_text="2-digit country code. Required to lookup the weather data on openweathermap.org API.",
     )
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, default=0)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, default=0)
 
     class Meta:
         verbose_name_plural = "Weather"

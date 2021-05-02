@@ -6,6 +6,7 @@ import requests
 from django.conf import settings
 
 from .models import Birthday, Pet, Weather
+from .weather import OpenWeatherMapAPI, Units, WeatherFormat
 
 BOT_INVOCATION = "!hb"
 
@@ -168,41 +169,30 @@ class WeatherCommandBot(GroupMeBot):
     command = "weather"
     help_text = "Returns current weather information"
 
-    def get_weather_by_zip(self, zip_code, country_code):
-        response = requests.get(
-            "https://api.openweathermap.org/data/2.5/weather",
-            params={
-                "zip": f"{zip_code},{country_code.lower()}",
-                "appid": settings.GROUPME["OPEN_WEATHER_API_KEY"],
-                "units": "imperial",
-            },
-        )
-        response.raise_for_status()
-        return response.json()
-
     def get_weather_data_string(self):
         weather_data = []
+        api = OpenWeatherMapAPI(
+            settings.GROUPME["OPEN_WEATHER_API_KEY"], Units.IMPERIAL
+        )
+
         for weather in Weather.objects.all():
             try:
-                api_data = self.get_weather_by_zip(
-                    weather.zipcode, weather.country_code
-                )
+                api_data = api.one_call(weather.latitude, weather.longitude)
             except requests.exceptions.HTTPError:
-                logger.warning(f"Couldn't lookup weather for: {weather}")
+                logger.exception(f"Couldn't lookup weather for: {weather}")
+            else:
+                formatter = WeatherFormat(api_data)
+                weather_format = formatter.format()
 
-            weather_data.append(
-                {
-                    "location": f"{weather.city}, {weather.state}",
-                    "description": api_data["weather"][0]["main"],
-                    "temp": api_data["main"]["temp"],
-                }
-            )
+                weather_data.append(
+                    {
+                        "location": f"{weather.city}, {weather.state}",
+                        "description": weather_format,
+                    }
+                )
 
         weather_string = "\n".join(
-            [
-                f"* {datum['location']} : {datum['temp']}°F -- {datum['description']}"
-                for datum in weather_data
-            ]
+            [f"* {datum['location']}: {datum['description']}" for datum in weather_data]
         )
         return weather_string
 
