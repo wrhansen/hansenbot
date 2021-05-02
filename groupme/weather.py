@@ -56,7 +56,7 @@ class WeatherFormat:
         self.data = data
 
     def weather_format(self, weather):
-        return f"{weather}{WEATHER_MAPPING.get(weather, '')}"
+        return WEATHER_MAPPING.get(weather, weather)
 
     def format(self):
 
