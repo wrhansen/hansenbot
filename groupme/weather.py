@@ -106,8 +106,8 @@ class WeatherAPIFormatter:
         self.data = data
 
     def format(self):
-        current = data["current"]
-        forecast = data["forecast"]["forecastday"][0]["day"]
+        current = self.data["current"]
+        forecast = self.data["forecast"]["forecastday"][0]["day"]
         context = {
             "current_temp": current["temp_f"],
             "current_weather": WEATHER_MAPPING.get(current["condition"]["text"], current["condition"]["text"]),
