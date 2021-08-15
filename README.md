@@ -48,6 +48,9 @@ This command retrieves current weather from openweathermap API for some location
 setup in the database. This `Weather` location database can be setup in the
 admin portal.
 
+Update: openweathermap data sucks. It always seems to be off by 5-10 degrees F.
+So I'm trying out weatherapi.com for now. So far I think it looks fine.
+
 # Heroku Recipes
 
 ## Access to bash shell

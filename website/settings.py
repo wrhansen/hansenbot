@@ -156,6 +156,7 @@ GROUPME = {
     "BOT_ID": os.environ["GROUPME_BOT_ID"],
     "ACCESS_TOKEN": os.environ["GROUPME_ACCESS_TOKEN"],
     "OPEN_WEATHER_API_KEY": os.environ["GROUPME_OPEN_WEATHER_API_KEY"],
+    "WEATHER_API_COM_KEY": os.environ["GROUPME_WEATHER_API_COM_KEY"]
 }
 
 REDIS_URL = os.environ["REDIS_URL"]

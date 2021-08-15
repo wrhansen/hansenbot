@@ -7,16 +7,74 @@ from django.template.loader import render_to_string
 # Source: https://openweathermap.org/weather-conditions
 WEATHER_MAPPING = {
     "Thunderstorm": "⛈",
+    "Thundery outbreaks possible": "⛈",
+
     "Drizzle": "🌧",
+    "Patchy rain possible": "🌧",
+    "Patchy light drizzle": "🌧",
+    "Light drizzle": "🌧",
+    "Light freezing rain": "🌧",
+    "Moderate or heavy freezing rain": "🌧",
+
+
+
     "Rain": "💧",
+    "Patchy light rain": "💧",
+    "Light rain": "💧",
+    "Rain": "💧",
+    "Moderate rain at times": "💧",
+    "Moderate rain": "💧",
+    "Heavy rain at times": "💧",
+    "Heavy rain": "💧",
+    "Light rain shower": "💧",
+    "Moderate or heavy rain shower": "💧",
+    "Torrential rain shower": "💧",
+    "Patchy light rain with thunder": "💧",
+    "Moderate or heavy rain with thunder": "💧",
+
     "Snow": "❄",
+    "Patchy snow possible": "❄",
+    "Patchy sleet possible": "❄",
+    "Patchy freezing drizzle possible": "❄",
+    "Blowing snow": "❄",
+    "Blizzard": "❄",
+    "Freezing drizzle": "❄",
+    "Heavy freezing drizzle": "❄",
+    "Light sleet": "❄",
+    "Moderate or heavy sleet": "❄",
+    "Patchy light snow": "❄",
+    "Light snow": "❄",
+    "Patchy moderate snow": "❄",
+    "Moderate snow": "❄",
+    "Patchy heavy snow": "❄",
+    "Heavy snow": "❄",
+    "Ice pellets": "❄",
+    "Light sleet showers": "❄",
+    "Moderate or heavy sleet showers": "❄",
+    "Light snow showers": "❄",
+    "Moderate or heavy snow showers": "❄",
+    "Light showers of ice pellets": "❄",
+    "Moderate or heavy showers of ice pellets": "❄",
+    "Patchy light snow with thunder": "❄",
+    "Moderate or heavy snow with thunder": "❄",
+
     "Mist": "🌧",
     "Haze": "🌧",
+
     "Fog": "🌁",
+    "Frezing Fog": "🌁",
+
     "Ash": "🌋",
+
     "Tornado": "🌪",
+
     "Clear": "☀",
-    "Clouds": "☁",
+    "Sunny": "☀",
+
+    "Partly cloudy": "☁",
+    "Cloudy": "☁",
+    "Overcast": "☁",
+
 }
 
 
@@ -71,4 +129,49 @@ class WeatherFormat:
         context["today_high"] = today["temp"]["max"]
         context["today_low"] = today["temp"]["min"]
         context["today_weather"] = self.weather_format(today["weather"][0]["main"])
+        return render_to_string("weather.html", context)
+
+
+class WeatherAPI:
+    '''
+    This is a class that encapsulates weatherapi.com data.
+    Going to see if this data is better than openweathermap.org
+    '''
+    base_url = "https://api.weatherapi.com/v1"
+
+    def __init__(self, api_key):
+        self.api_key = api_key
+
+    def fetch(self, url, params):
+        params["key"] = self.api_key
+        response = requests.get(url, params)
+        response.raise_for_status()
+        return response.json()
+
+    def get_weather_by_zip(self, zipcode, days=3):
+        url = f"{self.base_url}/forecast.json"
+        params = {
+            "days": days,
+            "q": zipcode,
+            "aqi": "no",
+            "alerts": "no",
+        }
+        return self.fetch(url, params)
+
+
+class WeatherAPIFormatter:
+    def __init__(self, data):
+        self.data = data
+
+    def format(self):
+        current = self.data["current"]
+        forecast = self.data["forecast"]["forecastday"][0]["day"]
+        context = {
+            "current_temp": round(current["temp_f"]),
+            "current_weather": WEATHER_MAPPING.get(current["condition"]["text"], current["condition"]["text"]),
+            "today_high": round(forecast["maxtemp_f"]),
+            "today_low": round(forecast["mintemp_f"]),
+            "today_weather": WEATHER_MAPPING.get(forecast["condition"]["text"], forecast["condition"]["text"]),
+        }
+
         return render_to_string("weather.html", context)
