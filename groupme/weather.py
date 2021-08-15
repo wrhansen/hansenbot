@@ -91,7 +91,7 @@ class WeatherAPI:
         return response.json()
 
     def get_weather_by_zip(self, zipcode, days=3):
-        url = f"{base_url}/forecast.json"
+        url = f"{self.base_url}/forecast.json"
         params = {
             "days": days,
             "q": zipcode,
