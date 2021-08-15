@@ -7,16 +7,74 @@ from django.template.loader import render_to_string
 # Source: https://openweathermap.org/weather-conditions
 WEATHER_MAPPING = {
     "Thunderstorm": "⛈",
+    "Thundery outbreaks possible": "⛈",
+
     "Drizzle": "🌧",
+    "Patchy rain possible": "🌧",
+    "Patchy light drizzle": "🌧",
+    "Light drizzle": "🌧",
+    "Light freezing rain": "🌧",
+    "Moderate or heavy freezing rain": "🌧",
+
+
+
     "Rain": "💧",
+    "Patchy light rain": "💧",
+    "Light rain": "💧",
+    "Rain": "💧",
+    "Moderate rain at times": "💧",
+    "Moderate rain": "💧",
+    "Heavy rain at times": "💧",
+    "Heavy rain": "💧",
+    "Light rain shower": "💧",
+    "Moderate or heavy rain shower": "💧",
+    "Torrential rain shower": "💧",
+    "Patchy light rain with thunder": "💧",
+    "Moderate or heavy rain with thunder": "💧",
+
     "Snow": "❄",
+    "Patchy snow possible": "❄",
+    "Patchy sleet possible": "❄",
+    "Patchy freezing drizzle possible": "❄",
+    "Blowing snow": "❄",
+    "Blizzard": "❄",
+    "Freezing drizzle": "❄",
+    "Heavy freezing drizzle": "❄",
+    "Light sleet": "❄",
+    "Moderate or heavy sleet": "❄",
+    "Patchy light snow": "❄",
+    "Light snow": "❄",
+    "Patchy moderate snow": "❄",
+    "Moderate snow": "❄",
+    "Patchy heavy snow": "❄",
+    "Heavy snow": "❄",
+    "Ice pellets": "❄",
+    "Light sleet showers": "❄",
+    "Moderate or heavy sleet showers": "❄",
+    "Light snow showers": "❄",
+    "Moderate or heavy snow showers": "❄",
+    "Light showers of ice pellets": "❄",
+    "Moderate or heavy showers of ice pellets": "❄",
+    "Patchy light snow with thunder": "❄",
+    "Moderate or heavy snow with thunder": "❄",
+
     "Mist": "🌧",
     "Haze": "🌧",
+
     "Fog": "🌁",
+    "Frezing Fog": "🌁",
+
     "Ash": "🌋",
+
     "Tornado": "🌪",
+
     "Clear": "☀",
-    "Clouds": "☁",
+    "Sunny": "☀",
+
+    "Partly cloudy": "☁",
+    "Cloudy": "☁",
+    "Overcast": "☁",
+
 }
 
 
@@ -109,10 +167,10 @@ class WeatherAPIFormatter:
         current = self.data["current"]
         forecast = self.data["forecast"]["forecastday"][0]["day"]
         context = {
-            "current_temp": current["temp_f"],
+            "current_temp": round(current["temp_f"]),
             "current_weather": WEATHER_MAPPING.get(current["condition"]["text"], current["condition"]["text"]),
-            "today_high": forecast["maxtemp_f"],
-            "today_low": forecast["mintemp_f"],
+            "today_high": round(forecast["maxtemp_f"]),
+            "today_low": rount(forecast["mintemp_f"]),
             "today_weather": WEATHER_MAPPING.get(forecast["condition"]["text"], forecast["condition"]["text"]),
         }
 
