@@ -170,7 +170,7 @@ class WeatherAPIFormatter:
             "current_temp": round(current["temp_f"]),
             "current_weather": WEATHER_MAPPING.get(current["condition"]["text"], current["condition"]["text"]),
             "today_high": round(forecast["maxtemp_f"]),
-            "today_low": rount(forecast["mintemp_f"]),
+            "today_low": round(forecast["mintemp_f"]),
             "today_weather": WEATHER_MAPPING.get(forecast["condition"]["text"], forecast["condition"]["text"]),
         }
 
