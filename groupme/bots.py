@@ -6,7 +6,7 @@ import requests
 from django.conf import settings
 
 from .models import Birthday, Pet, Weather
-from .weather import OpenWeatherMapAPI, Units, WeatherFormat
+from .weather import WeatherAPI, Units, WeatherAPIFormatter
 
 BOT_INVOCATION = "!hb"
 
@@ -171,17 +171,15 @@ class WeatherCommandBot(GroupMeBot):
 
     def get_weather_data_string(self):
         weather_data = []
-        api = OpenWeatherMapAPI(
-            settings.GROUPME["OPEN_WEATHER_API_KEY"], Units.IMPERIAL
-        )
+        api = WeatherAPI(settings.GROUPME["WEATHER_API_COM_KEY"])
 
         for weather in Weather.objects.all():
             try:
-                api_data = api.one_call(weather.latitude, weather.longitude)
+                api_data = api.get_weather_by_zip(weather.zipcode)
             except requests.exceptions.HTTPError:
                 logger.exception(f"Couldn't lookup weather for: {weather}")
             else:
-                formatter = WeatherFormat(api_data)
+                formatter = WeatherAPIFormatter(api_data)
                 weather_format = formatter.format()
 
                 weather_data.append(

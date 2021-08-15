@@ -72,3 +72,48 @@ class WeatherFormat:
         context["today_low"] = today["temp"]["min"]
         context["today_weather"] = self.weather_format(today["weather"][0]["main"])
         return render_to_string("weather.html", context)
+
+
+class WeatherAPI:
+    '''
+    This is a class that encapsulates weatherapi.com data.
+    Going to see if this data is better than openweathermap.org
+    '''
+    base_url = "https://api.weatherapi.com/v1"
+
+    def __init__(self, api_key):
+        self.api_key = api_key
+
+    def fetch(self, url, params):
+        params["key"] = self.api_key
+        response = requests.get(url, params)
+        response.raise_for_status()
+        return response.json()
+
+    def get_weather_by_zip(self, zipcode, days=3):
+        url = f"{base_url}/forecast.json"
+        params = {
+            "days": days,
+            "q": zipcode,
+            "aqi": "no",
+            "alerts": "no",
+        }
+        return self.fetch(url, params)
+
+
+class WeatherAPIFormatter:
+    def __init__(self, data):
+        self.data = data
+
+    def format(self):
+        current = data["current"]
+        forecast = data["forecast"]["forecastday"][0]["day"]
+        context = {
+            "current_temp": current["temp_f"],
+            "current_weather": WEATHER_MAPPING.get(current["condition"]["text"], current["condition"]["text"]),
+            "today_high": forecast["maxtemp_f"],
+            "today_low": forecast["mintemp_f"],
+            "today_weather": WEATHER_MAPPING.get(forecast["condition"]["text"], forecast["condition"]["text"]),
+        }
+
+        return render_to_string("weather.html", context)
