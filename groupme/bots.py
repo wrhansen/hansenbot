@@ -259,4 +259,4 @@ class ReminderCommandBot(GroupMeBot):
         )
 
     def render_reminder_string(self, data):
-        return render_to_string("reminder.html", data)
+        return render_to_string("reminder.txt", data)
