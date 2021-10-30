@@ -246,7 +246,7 @@ class ReminderCommandBot(GroupMeBot):
 
     def execute(self):
         reminder_string = self.render_reminder_string(
-            Reminder.objects.filter(expires__gt=timezone.now().date)
+            Reminder.objects.filter(expires__gt=timezone.now().date())
         )
         self.post_message(
             f"""Reminders:
@@ -255,7 +255,7 @@ class ReminderCommandBot(GroupMeBot):
 
     def digest(self):
         return self.render_reminder_string(
-            Reminder.objects.filter(expires__gt=timezone.now().date)
+            Reminder.objects.filter(expires__gt=timezone.now().date())
         )
 
     def render_reminder_string(self, data):
