@@ -6,7 +6,7 @@ import requests
 from django.conf import settings
 
 from .models import Birthday, Pet, Weather
-from .weather import WeatherAPI, Units, WeatherAPIFormatter
+from .weather import WeatherAPI, WeatherAPIFormatter
 
 BOT_INVOCATION = "!hb"
 
