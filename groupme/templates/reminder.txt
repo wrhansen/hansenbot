@@ -1,3 +1,1 @@
-{% for reminder in reminders %}
-* {{reminder.message}}
-{% endfor %}
+{% for reminder in reminders %}* {{reminder.message}}{% endfor %}
