@@ -258,6 +258,6 @@ class ReminderCommandBot(GroupMeBot):
     def render_reminder_string(self):
 
         reminders = Reminder.objects.filter(
-            Q(expires_gt=timezone.now().date()) | Q(expires__isnull=True)
+            Q(expires__gt=timezone.now().date()) | Q(expires__isnull=True)
         )
         return render_to_string("reminder.txt", {"reminders": reminders})
