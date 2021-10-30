@@ -1,2 +1,2 @@
 {% for reminder in reminders %}
-* {{reminder.message}}{% endfor %}
+* {{reminder.message}} {% if reminder.expires %}[by {{reminder.expires}}]{% endif %}{% endfor %}
