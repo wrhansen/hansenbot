@@ -4,6 +4,7 @@ from typing import Dict, Optional
 
 import requests
 from django.conf import settings
+from django.db.models import Q
 from django.template.loader import render_to_string
 from django.utils import timezone
 
@@ -245,18 +246,18 @@ class ReminderCommandBot(GroupMeBot):
     help_text = "List reminders to the group"
 
     def execute(self):
-        reminder_string = self.render_reminder_string(
-            Reminder.objects.filter(expires__gt=timezone.now().date())
-        )
+        reminder_string = self.render_reminder_string()
         self.post_message(
             f"""Reminders:
 {reminder_string}"""
         )
 
     def digest(self):
-        return self.render_reminder_string(
-            Reminder.objects.filter(expires__gt=timezone.now().date())
-        )
+        return self.render_reminder_string()
 
-    def render_reminder_string(self, data):
-        return render_to_string("reminder.txt", {"reminders": data})
+    def render_reminder_string(self):
+
+        reminders = Reminder.objects.filter(
+            Q(expires_gt=timezone.now().date()) | Q(expires__isnull=True)
+        )
+        return render_to_string("reminder.txt", {"reminders": reminders})
