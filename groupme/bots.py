@@ -4,8 +4,10 @@ from typing import Dict, Optional
 
 import requests
 from django.conf import settings
+from django.template.loader import render_to_string
+from django.utils import timezone
 
-from .models import Birthday, Pet, Weather
+from .models import Birthday, Pet, Reminder, Weather
 from .weather import WeatherAPI, WeatherAPIFormatter
 
 BOT_INVOCATION = "!hb"
@@ -236,3 +238,25 @@ class PetCommandBot(GroupMeBot):
 {next_bday_message}!"""
 
         self.post_message(message)
+
+
+class ReminderCommandBot(GroupMeBot):
+    command = "reminder"
+    help_text = "List reminders to the group"
+
+    def execute(self):
+        reminder_string = self.render_reminder_string(
+            Reminder.objects.filter(expires__gt=timezone.now().date)
+        )
+        self.post_message(
+            f"""Reminders:
+{reminder_string}"""
+        )
+
+    def digest(self):
+        return self.render_reminder_string(
+            Reminder.objects.filter(expires__gt=timezone.now().date)
+        )
+
+    def render_reminder_string(self, data):
+        return render_to_string("reminder.html", data)

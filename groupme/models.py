@@ -127,3 +127,11 @@ class Pet(models.Model, BirthdayMixin):
 
     def __str__(self):
         return f"{self.name} : {self.type} : {self.birthdate} : {self.age} : {self.next_bday}"
+
+
+class Reminder(models.Model):
+    message = models.TextField()
+    expires = models.DateField(default=None, null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Reminders"
