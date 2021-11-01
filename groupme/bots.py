@@ -253,7 +253,10 @@ class ReminderCommandBot(GroupMeBot):
         )
 
     def digest(self):
-        return self.render_reminder_string()
+        reminder_string = self.render_reminder_string()
+        if reminder_string:
+            reminder_string = f"Reminders:\n{reminder_string}"
+        return reminder_string
 
     def render_reminder_string(self):
 
