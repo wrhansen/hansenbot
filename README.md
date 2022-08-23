@@ -89,7 +89,7 @@ print logs to the shell.
 
 To run tests locally, just run the following command:
 
-```
+```bash
 $ ./manage.py test --settings=website.local_settings
 ```
 
