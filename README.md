@@ -94,4 +94,4 @@ $ ./manage.py test --settings=website.local_settings
 ```
 
 NOTE: the `website.local_settings` option is necessary for running the tests
-in the right environment.
+in the right environment
