@@ -1,5 +1,5 @@
 # Web Framework
-Django<2.3
+Django<3.3
 
 # DB
 psycopg2-binary>=2.7<3.0
