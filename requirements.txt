@@ -20,3 +20,6 @@ freezegun==1.0.0
 # Async
 celery==5.0.1
 redis==3.5.3
+
+# Loggin
+sentry-sdk==1.9.5

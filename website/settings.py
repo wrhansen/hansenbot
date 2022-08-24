@@ -10,17 +10,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
-import logging
-
-# Logging
-import logging.config
 import os
 
 import django_heroku
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+sentry_sdk.init(dsn=os.environ["SENTRY_DSN"], integrations=[DjangoIntegration()])
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -156,7 +155,7 @@ GROUPME = {
     "BOT_ID": os.environ["GROUPME_BOT_ID"],
     "ACCESS_TOKEN": os.environ["GROUPME_ACCESS_TOKEN"],
     "OPEN_WEATHER_API_KEY": os.environ["GROUPME_OPEN_WEATHER_API_KEY"],
-    "WEATHER_API_COM_KEY": os.environ["GROUPME_WEATHER_API_COM_KEY"]
+    "WEATHER_API_COM_KEY": os.environ["GROUPME_WEATHER_API_COM_KEY"],
 }
 
 REDIS_URL = os.environ["REDIS_URL"]
