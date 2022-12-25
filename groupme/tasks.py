@@ -1,6 +1,7 @@
 import logging
 
 from celery.schedules import crontab
+
 from website import celery_app as app
 
 from .bots import GroupMeBot, ParseError, parse_command, registry
@@ -75,6 +76,6 @@ def morning_digest():
 app.conf.beat_schedule = {
     "morning_digest": {
         "task": "groupme.tasks.morning_digest",
-        "schedule": daily_morning,
+        "schedule": every_minute,
     },
 }
