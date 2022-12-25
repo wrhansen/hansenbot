@@ -95,3 +95,21 @@ $ ./manage.py test --settings=website.local_settings
 
 NOTE: the `website.local_settings` option is necessary for running the tests
 in the right environment.
+
+
+## AWS ElasticBeanstalk notes
+
+From project root on local machine:
+`eb shell hansenbot-env`
+
+Change to the current app directory
+`cd /var/app/current/`
+
+Activate the virtual env
+`source $(find /var/app/venv/*/bin/activate)`
+
+Load your environment variables
+`export $(sudo cat /opt/elasticbeanstalk/deployment/env | xargs)`
+
+Now you can run management commands
+`python manage.py shell`
