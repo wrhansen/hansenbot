@@ -60,7 +60,7 @@ def morning_digest():
                 message = bot.digest()
                 if message:
                     messages.append(bot.digest())
-            except Exception as e:
+            except Exception:
                 logger.exception(
                     "Error with bot digest", exc_info=True, extra={"bot_class": Bot}
                 )
