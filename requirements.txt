@@ -15,7 +15,7 @@ botocore<1.24.0,>1.23.41
 freezegun==1.0.0
 
 # Async
-celery[sqs]==5.0.1
+celery[sqs]==5.1.0
 
 redis==3.5.3
 
