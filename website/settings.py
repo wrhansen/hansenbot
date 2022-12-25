@@ -173,8 +173,8 @@ GROUPME = {
 
 # REDIS_URL = os.environ["REDIS_URL"]
 
-CELERY_BROKER_URL = "memory://localhost:8000"
-CELERY_RESULT_BACKEND = "memory://localhost:8000"
+# CELERY_BROKER_URL = "memory://localhost:8000"
+# CELERY_RESULT_BACKEND = "memory://localhost:8000"
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_TASK_TIME_LIMIT = 30 * 60
