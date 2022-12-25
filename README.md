@@ -113,3 +113,9 @@ Load your environment variables
 
 Now you can run management commands
 `python manage.py shell`
+
+## Useful Links
+
+* GroupMe Developer Bots portal: https://dev.groupme.com/bots
+* Sentry Project Link: https://sentry.io/organizations/wesley-hansen/issues/?project=4504385264025600
+
