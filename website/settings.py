@@ -29,6 +29,8 @@ DEBUG = bool(int(os.environ.get("DEBUG", 1)))
 
 ALLOWED_HOSTS = os.environ["ALLOWED_HOSTS"].split(",")
 
+SECRET_KEY = os.environ["SECRET_KEY"]
+
 SECURE_SSL_REDIRECT = False
 
 LOGGING = {
