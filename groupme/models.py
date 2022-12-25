@@ -1,5 +1,4 @@
 import datetime
-import typing
 from calendar import monthrange
 
 from django.db import models
