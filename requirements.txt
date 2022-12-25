@@ -6,6 +6,7 @@ psycopg2-binary>=2.7<3.0
 
 # WSGI
 gunicorn==20.0.4
+pycurl==7.43.0.5
 
 # GroupMe app
 djangorestframework==3.12.1
