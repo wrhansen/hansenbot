@@ -1,3 +1,6 @@
+'''
+NOTE: This file is deprecated, trying a solution without needing celery
+'''
 import os
 
 from celery import Celery

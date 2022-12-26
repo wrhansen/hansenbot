@@ -1,16 +1,10 @@
 import logging
 
-from celery.schedules import crontab
-
-from website import celery_app as app
-
 from .bots import GroupMeBot, ParseError, parse_command, registry
 
 logger = logging.getLogger(__name__)
-app.conf.update(timezone="America/Detroit")
 
 
-@app.task
 def handle_bot_message(**data):
 
     try:
@@ -39,13 +33,6 @@ def handle_bot_message(**data):
     bot.execute()
 
 
-daily_morning = crontab(minute=0, hour=8)
-every_minute = crontab()
-every_30_minutes = crontab(minute="*/30")
-afternoon = crontab(minute=0, hour=13)
-
-
-@app.task
 def morning_digest():
     """
     Daily morning routine that checks for upcoming birthdays and countdowns and
@@ -70,12 +57,3 @@ def morning_digest():
         messages_str = "\n\n".join(messages)
         bot_message = f"Good Morning Hansen Family!\nHere is what you need to know today:\n\n{messages_str}"
         bot.post_message(bot_message)
-
-
-# Celery Beat schedule for the groupme app.
-app.conf.beat_schedule = {
-    "morning_digest": {
-        "task": "groupme.tasks.morning_digest",
-        "schedule": every_minute,
-    },
-}

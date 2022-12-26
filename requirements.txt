@@ -6,19 +6,13 @@ psycopg2-binary>=2.7<3.0
 
 # WSGI
 gunicorn==20.0.4
-pycurl==7.43.0.5
 
 # GroupMe app
 djangorestframework==3.12.1
-requests
+requests==2.28.1
 
 # Tests
 freezegun==1.0.0
 
-# Async
-celery[sqs]==5.1.0
-
-redis==3.5.3
-
-# Loggin
+# Logging
 sentry-sdk==1.12.1

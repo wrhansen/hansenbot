@@ -170,19 +170,3 @@ GROUPME = {
     "OPEN_WEATHER_API_KEY": os.environ["GROUPME_OPEN_WEATHER_API_KEY"],
     "WEATHER_API_COM_KEY": os.environ["GROUPME_WEATHER_API_COM_KEY"],
 }
-
-CELERY_BROKER_URL = "sqs://"
-# CELERY_RESULT_BACKEND = "sqs://"
-CELERY_BROKER_TRANSPORT = "sqs"
-CELERY_BROKER_TRANSPORT_OPTIONS = {
-    "region": "us-east-1",
-    "visibility_timeout": 3600,
-    "polling_interval": 60
-}
-CELERY_ACCEPT_CONTENT = ["json"]
-CELERY_TASK_SERIALIZER = "json"
-CELERY_TASK_TIME_LIMIT = 30 * 60
-CELERY_TASK_ALWAYS_EAGER = True
-CELERY_TASK_EAGER_PROPAGATES = True
-
-# django_heroku.settings(locals(), logging=False)
