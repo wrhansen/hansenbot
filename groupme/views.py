@@ -26,6 +26,6 @@ class HansenBotWebhook(APIView):
             )
             return Response({}, status=400)
 
-        handle_bot_message.delay(**serializer.validated_data)
+        handle_bot_message(**serializer.validated_data)
 
         return Response({}, status=200)
