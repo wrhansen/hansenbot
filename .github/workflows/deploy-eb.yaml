@@ -22,6 +22,7 @@ jobs:
           application_name: ${{ secrets.APPLICATION_NAME }}
           environment_name: ${{ secrets.ENVIRONMENT_NAME }}
           existing_bucket_name: ${{ secrets.AWS_BUCKET_NAME }}
+          version_label: app-${{ github.SHA }}
           region: ${{ secrets.AWS_REGION }}
           deployment_package: app.zip
           wait_for_deployment: true
