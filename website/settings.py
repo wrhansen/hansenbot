@@ -170,3 +170,12 @@ GROUPME = {
     "OPEN_WEATHER_API_KEY": os.environ["GROUPME_OPEN_WEATHER_API_KEY"],
     "WEATHER_API_COM_KEY": os.environ["GROUPME_WEATHER_API_COM_KEY"],
 }
+
+
+OPENAI_KEY = os.environ["OPENAI_KEY"]
+OPENAI_SETTINGS = {
+    "engine": "text-davinci-003",
+    "max_tokens": 1500,
+    "temperature": 0.9,
+    "top_p": 1,
+}

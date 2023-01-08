@@ -51,6 +51,15 @@ admin portal.
 Update: openweathermap data sucks. It always seems to be off by 5-10 degrees F.
 So I'm trying out weatherapi.com for now. So far I think it looks fine.
 
+### `ai` command
+
+Invoked in the following way:
+
+`!hb ai <prompt>`
+
+This command uses the OpenAI *completion* api to respond to whatever the user
+enters in the `<prompt>`.
+
 ## Run tests (locally)
 
 To run tests locally, just run the following command:

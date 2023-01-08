@@ -16,3 +16,6 @@ freezegun==1.0.0
 
 # Logging
 sentry-sdk==1.12.1
+
+# OpenAI
+openai==0.26.0

@@ -1,17 +1,8 @@
 import os
 
-os.environ.update(
-    {
-        "ALLOWED_HOSTS": "localhost",
-        "GROUPME_BOT_ID": "",
-        "GROUPME_ACCESS_TOKEN": "",
-        "GROUPME_OPEN_WEATHER_API_KEY": "",
-        "GROUPME_WEATHER_API_COM_KEY": "",
-        "REDIS_URL": "redis://",
-        "SECRET_KEY": "changeme",
-    }
-)
+from dotenv import load_dotenv
 
+load_dotenv()
 
 from .settings import *
 

@@ -56,6 +56,8 @@ class GroupMeBot(metaclass=GroupMeBotType):
         self.args = args
         self.kwargs = kwargs
 
+        self.prompt = " ".join(self.args[0])
+
     def execute(self):
         raise NotImplementedError("Implement this!")
 
@@ -264,3 +266,16 @@ class ReminderCommandBot(GroupMeBot):
             Q(expires__gt=timezone.now().date()) | Q(expires__isnull=True)
         )
         return render_to_string("reminder.txt", {"reminders": reminders})
+
+
+class OpenAICommandBot(GroupMeBot):
+    command = "ai"
+    help_text = "Talk to me, I am here to assist you with whatever you need."
+
+    def execute(self):
+        import openai
+        openai.api_key = settings.OPENAI_KEY
+
+        completion = openai.Completion.create(prompt=self.prompt, **settings.OPENAI_SETTINGS)
+        answer = completion["choices"][0]["text"]
+        self.post_message(answer.strip())
