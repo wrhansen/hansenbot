@@ -14,12 +14,29 @@ import os
 
 # import django_heroku
 import sentry_sdk
+from django.core.exceptions import DisallowedHost
 from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-sentry_sdk.init(dsn=os.environ["SENTRY_DSN"], integrations=[DjangoIntegration()])
+
+def before_send(event, hint):
+    if "exc_info" in hint:
+        errors_to_ignore = [DisallowedHost]
+        exc_value = hint["exc_info"][1]
+
+        if isinstance(exc_value, errors_to_ignore):
+            return None
+
+    return event
+
+
+sentry_sdk.init(
+    dsn=os.environ["SENTRY_DSN"],
+    integrations=[DjangoIntegration()],
+    before_send=before_send,
+)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -32,7 +49,7 @@ ALLOWED_HOSTS = os.environ["ALLOWED_HOSTS"].split(",")
 import requests
 
 try:
-    internal_ip = requests.get('http://instance-data/latest/meta-data/local-ipv4').text
+    internal_ip = requests.get("http://instance-data/latest/meta-data/local-ipv4").text
 except requests.exceptions.ConnectionError:
     pass
 else:
