@@ -29,6 +29,16 @@ DEBUG = bool(int(os.environ.get("DEBUG", 1)))
 
 ALLOWED_HOSTS = os.environ["ALLOWED_HOSTS"].split(",")
 
+import requests
+
+try:
+    internal_ip = requests.get('http://instance-data/latest/meta-data/local-ipv4').text
+except requests.exceptions.ConnectionError:
+    pass
+else:
+    ALLOWED_HOSTS.append(internal_ip)
+del requests
+
 SECRET_KEY = os.environ["SECRET_KEY"]
 
 SECURE_SSL_REDIRECT = False
