@@ -11,8 +11,8 @@ openai.api_key = OPEN_API_KEY
 
 engines = openai.Engine.list()
 print(engines)
-for engine in engines['data']:
-    print(engine['id'])
+for engine in engines["data"]:
+    print(engine["id"])
 
 good_engines = "text-davinci-003"
 
@@ -24,7 +24,9 @@ CHAT_SETTINGS = {
     "top_p": 1,
 }
 
-completion = openai.Completion.create(prompt="Will AI rise up and destroy the human race?", **CHAT_SETTINGS)
+completion = openai.Completion.create(
+    prompt="Will AI rise up and destroy the human race?", **CHAT_SETTINGS
+)
 
 print(completion)
-print(completion["choices"][0]['text'])
+print(completion["choices"][0]["text"])
