@@ -275,13 +275,20 @@ class OpenAICommandBot(GroupMeBot):
     command = "ai"
     help_text = "Talk to me, I am here to assist you with whatever you need."
 
-    def execute(self):
+    def prompt_openai(self, prompt):
         import openai
 
         openai.api_key = settings.OPENAI_KEY
 
-        completion = openai.Completion.create(
-            prompt=self.prompt, **settings.OPENAI_SETTINGS
-        )
+        completion = openai.Completion.create(prompt=prompt, **settings.OPENAI_SETTINGS)
         answer = completion["choices"][0]["text"]
+        return answer
+
+    def execute(self):
+        answer = self.prompt_openai(self.prompt)
         self.post_message(answer.strip())
+
+    def digest(self):
+        answer = self.prompt_openai("Give an inspirational quote.")
+        answer_string = f"Quote of the day:\n{answer.strip()}"
+        return answer_string
