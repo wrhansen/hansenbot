@@ -56,7 +56,10 @@ class GroupMeBot(metaclass=GroupMeBotType):
         self.args = args
         self.kwargs = kwargs
 
-        self.prompt = " ".join(self.args[0])
+        if len(self.args):
+            self.prompt = " ".join(self.args[0])
+        else:
+            self.prompt = ""
 
     def execute(self):
         raise NotImplementedError("Implement this!")
@@ -274,8 +277,11 @@ class OpenAICommandBot(GroupMeBot):
 
     def execute(self):
         import openai
+
         openai.api_key = settings.OPENAI_KEY
 
-        completion = openai.Completion.create(prompt=self.prompt, **settings.OPENAI_SETTINGS)
+        completion = openai.Completion.create(
+            prompt=self.prompt, **settings.OPENAI_SETTINGS
+        )
         answer = completion["choices"][0]["text"]
         self.post_message(answer.strip())
