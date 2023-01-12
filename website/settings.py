@@ -21,12 +21,15 @@ from sentry_sdk.integrations.django import DjangoIntegration
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-def before_send(event, hint):
+def strip_disallowed_host(event, hint):
     if "exc_info" in hint:
         errors_to_ignore = [DisallowedHost, SuspiciousOperation]
-        exc_value = hint["exc_info"][1]
+        exc_type = hint["exc_info"][1]
+        import sys
 
-        if isinstance(exc_value, errors_to_ignore):
+        sys.stdout.write(f"EXC_INFO:   {hint}")
+
+        if isinstance(exc_type, errors_to_ignore):
             return None
 
     return event
@@ -35,7 +38,7 @@ def before_send(event, hint):
 sentry_sdk.init(
     dsn=os.environ["SENTRY_DSN"],
     integrations=[DjangoIntegration()],
-    before_send=before_send,
+    before_send=strip_disallowed_host,
 )
 
 # Quick-start development settings - unsuitable for production
