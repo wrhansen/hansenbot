@@ -14,7 +14,7 @@ import os
 
 # import django_heroku
 import sentry_sdk
-from django.core.exceptions import DisallowedHost
+from django.core.exceptions import DisallowedHost, SuspiciousOperation
 from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def before_send(event, hint):
     if "exc_info" in hint:
-        errors_to_ignore = [DisallowedHost]
+        errors_to_ignore = [DisallowedHost, SuspiciousOperation]
         exc_value = hint["exc_info"][1]
 
         if isinstance(exc_value, errors_to_ignore):
