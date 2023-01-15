@@ -64,7 +64,7 @@ class GroupMeBot(metaclass=GroupMeBotType):
     def execute(self):
         raise NotImplementedError("Implement this!")
 
-    def upload_image(image_url):
+    def upload_image(self, image_url):
         image_string = requests.get(image_url)
 
         response = requests.post(
