@@ -64,16 +64,37 @@ class GroupMeBot(metaclass=GroupMeBotType):
     def execute(self):
         raise NotImplementedError("Implement this!")
 
-    def post_message(self, text):
+    def upload_image(image_url):
+        image_string = requests.get(image_url)
+
+        response = requests.post(
+            url="https://image.groupme.com/pictures",
+            data=image_string,
+            headers={
+                "Content-Type": "image/png",
+                "X-Access-Token": settings.GROUPME["ACCESS_TOKEN"],
+            },
+        )
+        return response.json()["payload"]["picture_url"]
+
+    def post_message(self, text=None, image_url=None):
+        json = {"bot_id": settings.GROUPME["BOT_ID"]}
+        if text:
+            json["text"] = text
+        if image_url:
+            picture_url = self.upload_image(image_url)
+            json["picture_url"] = picture_url
+
         response = requests.post(
             "https://api.groupme.com/v3/bots/post",
-            json={"text": text, "bot_id": settings.GROUPME["BOT_ID"]},
+            json=json,
         )
         logger.info(
             "Bot Message Posted",
             extra={
                 "status": response.status_code,
                 "text": text,
+                "image_url": image_url,
             },
         )
 
@@ -292,3 +313,33 @@ class OpenAICommandBot(GroupMeBot):
         answer = self.prompt_openai("Give an inspirational quote.")
         answer_string = f"Quote of the day:\n{answer.strip()}"
         return answer_string
+
+
+class OpenAIImageCommandBot(GroupMeBot):
+    command = "image"
+    help_text = "Give a description and I will draw something."
+
+    def prompt_openai(self, prompt):
+        import openai
+
+        openai.api_key = settings.OPENAI_KEY
+        try:
+            completion = openai.Image.create(prompt=prompt, n=1, size="1024x1024")
+        except openai.error.InvalidRequestError:
+            logger.exception(
+                f"Error generating Image from prompt: {prompt}", exc_info=True
+            )
+            return None
+        else:
+            answer = completion["data"][0]["url"]
+            return answer
+
+    def execute(self):
+        answer = self.prompt_openai(self.prompt)
+        if not answer:
+            answer = (
+                f"My Apologies, I could not generate the requested image: {self.prompt}"
+            )
+            self.post_message(text=answer)
+        else:
+            self.post_message(text=f"{self.prompt}", image_url=answer)

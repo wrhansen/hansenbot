@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
-# import django_heroku
+import requests
 import sentry_sdk
 from django.core.exceptions import DisallowedHost, SuspiciousOperation
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -49,15 +49,12 @@ DEBUG = bool(int(os.environ.get("DEBUG", 1)))
 
 ALLOWED_HOSTS = os.environ["ALLOWED_HOSTS"].split(",")
 
-import requests
-
 try:
     internal_ip = requests.get("http://instance-data/latest/meta-data/local-ipv4").text
 except requests.exceptions.ConnectionError:
     pass
 else:
     ALLOWED_HOSTS.append(internal_ip)
-del requests
 
 SECRET_KEY = os.environ["SECRET_KEY"]
 
@@ -193,14 +190,12 @@ REST_FRAMEWORK = {
     ]
 }
 
-
 GROUPME = {
     "BOT_ID": os.environ["GROUPME_BOT_ID"],
     "ACCESS_TOKEN": os.environ["GROUPME_ACCESS_TOKEN"],
     "OPEN_WEATHER_API_KEY": os.environ["GROUPME_OPEN_WEATHER_API_KEY"],
     "WEATHER_API_COM_KEY": os.environ["GROUPME_WEATHER_API_COM_KEY"],
 }
-
 
 OPENAI_KEY = os.environ["OPENAI_KEY"]
 OPENAI_SETTINGS = {
