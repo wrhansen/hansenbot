@@ -121,57 +121,52 @@ class BirthdayCommandBot(GroupMeBot):
     command = "birthday"
     help_text = "Lists family birthdays"
 
-    def _get_birthday_list(self):
-        return [
-            (
-                bday.name,
-                bday.age,
-                bday.next_bday,
-                bday.birthdate,
-                bday.str_age,
-            )
-            for bday in Birthday.objects.all()
-        ]
+    def next_birthday(self) -> Birthday:
+        return min(Birthday.objects.all(), key=lambda x: x.next_bday)
 
-    def next_birthday(self, birthday_list):
-        return min(birthday_list, key=lambda x: x[2])
-
-    def digest(self):
-        birthday_list = self._get_birthday_list()
-
-        (name, age, next_bday, birthdate, birthdate_str) = self.next_birthday(
-            birthday_list
-        )
-        if next_bday == 0:
-            if birthdate.year == datetime.datetime.now().year:  # Born today
-                return f"{name} is born today! Welcome to the family!"
+    def digest(self) -> str:
+        birthday_strings = []
+        for b in Birthday.objects.all():
+            if b.next_bday == 0:  # Birthday is today
+                if b.birthdate.year == datetime.datetime.now().year:  # Born today
+                    birthday_strings.append(
+                        f"* {b.name} is born today! Welcome to the family!"
+                    )
+                else:
+                    birthday_strings.append(
+                        f"* Happy Birthday! {b.name} turns {b.age} today!"
+                    )
+            elif b.next_bday < 15:  # Birthday is upcoming
+                birthday_strings.append(
+                    f"* Upcoming birthday: {b.name} turns {b.age+1} in {b.next_bday} days!"
+                )
+            elif b.milestone_changed:  # Baby Milestone change
+                birthday_strings.append(
+                    f"* New Milestone! {b.name} is {b.milestone} old today!"
+                )
             else:
-                return f"Happy Birthday! {name} turns {age} today!"
-        elif next_bday < 15:
-            return f"Birthdays: \nNext upcoming birthday: {name} turns {age+1} in {next_bday} days!"
-        else:
-            return ""
+                continue
+        if birthday_strings:
+            birthday_strings.insert(0, "Birthdays:")
+        return "\n".join(birthday_strings)
 
     def execute(self):
-        birthday_list = self._get_birthday_list()
-
-        (name, age, next_bday, birthdate, birthdate_str) = self.next_birthday(
-            birthday_list
-        )
+        birthday = self.next_birthday()
 
         birthday_list_str = "\n".join(
-            f"    {b[0]} : {b[4]} ({b[3]})" for b in birthday_list
+            f"    {b.name} : {b.str_age} ({b.birthdate})"
+            for b in Birthday.objects.all()
         )
 
-        if next_bday == 0:
-            if birthdate.year == datetime.datetime.now().year:  # Born today
-                return f"{name} is born today! Welcome to the family!"
+        if birthday.next_bday == 0:
+            if birthday.birthdate.year == datetime.datetime.now().year:  # Born today
+                return f"{birthday.name} is born today! Welcome to the family!"
             else:
-                next_bday_message = f"Happy Birthday! {name} turns {age} today!"
+                next_bday_message = (
+                    f"Happy Birthday! {birthday.name} turns {birthday.age} today!"
+                )
         else:
-            next_bday_message = (
-                f"Next upcoming birthday: {name} turns {age+1} in {next_bday} days!"
-            )
+            next_bday_message = f"Next upcoming birthday: {birthday.name} turns {birthday.age+1} in {birthday.next_bday} days!"
 
         message = f"""I know the following birthdays:
 {birthday_list_str}
