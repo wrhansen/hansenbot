@@ -19,3 +19,6 @@ sentry-sdk==1.12.1
 
 # OpenAI
 openai==0.26.0
+
+# Fix for EB ALLOWED_HOSTS errors
+django-ebhealthcheck==2.0.2
