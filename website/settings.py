@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def strip_disallowed_host(event, hint):
     if "exc_info" in hint:
-        errors_to_ignore = [DisallowedHost, SuspiciousOperation]
+        errors_to_ignore = (DisallowedHost, SuspiciousOperation)
         exc_type = hint["exc_info"][1]
         import sys
 
