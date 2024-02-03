@@ -1,5 +1,6 @@
 import datetime
 import logging
+import random
 from typing import Dict, Optional
 
 import requests
@@ -290,14 +291,20 @@ class ReminderCommandBot(GroupMeBot):
 class OpenAICommandBot(GroupMeBot):
     command = "ai"
     help_text = "Talk to me, I am here to assist you with whatever you need."
+    random_prompts = [
+        "Give an inspirational quote.",
+        "Give me a new inspirational bible verse.",
+    ]
 
     def prompt_openai(self, prompt):
-        import openai
+        from openai import OpenAI
 
-        openai.api_key = settings.OPENAI_KEY
+        client = OpenAI(api_key=settings.OPENAI_KEY)
 
-        completion = openai.Completion.create(prompt=prompt, **settings.OPENAI_SETTINGS)
-        answer = completion["choices"][0]["text"]
+        completion = client.completions.create(
+            messages=[{"role": "user", "content": prompt}], **settings.OPENAI_SETTINGS
+        )
+        answer = completion.choices[0].message.content
         return answer
 
     def execute(self):
@@ -305,7 +312,7 @@ class OpenAICommandBot(GroupMeBot):
         self.post_message(answer.strip())
 
     def digest(self):
-        answer = self.prompt_openai("Give an inspirational quote.")
+        answer = self.prompt_openai(random.choice(self.random_prompts))
         answer_string = f"Quote of the day:\n{answer.strip()}"
         return answer_string
 
@@ -316,17 +323,19 @@ class OpenAIImageCommandBot(GroupMeBot):
 
     def prompt_openai(self, prompt):
         import openai
+        from openai import OpenAI
 
-        openai.api_key = settings.OPENAI_KEY
+        client = OpenAI(api_key=settings.OPENAI_KEY)
+
         try:
-            completion = openai.Image.create(prompt=prompt, n=1, size="1024x1024")
-        except openai.error.InvalidRequestError:
+            completion = client.images.generate(prompt=prompt, n=1, size="1024x1024")
+        except openai.InvalidRequestError:
             logger.exception(
                 f"Error generating Image from prompt: {prompt}", exc_info=True
             )
             return None
         else:
-            answer = completion["data"][0]["url"]
+            answer = completion.data[0].url
             return answer
 
     def execute(self):

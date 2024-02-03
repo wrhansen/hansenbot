@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 class MessageSerializer(serializers.Serializer):
     # attachments = serializers.ListField()
-    avatar_url = serializers.URLField()
+    avatar_url = serializers.URLField(required=False, allow_null=True, allow_blank=True)
     created_at = serializers.IntegerField()
     group_id = serializers.CharField()
     id = serializers.CharField()

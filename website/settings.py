@@ -199,8 +199,7 @@ GROUPME = {
 
 OPENAI_KEY = os.environ["OPENAI_KEY"]
 OPENAI_SETTINGS = {
-    "engine": "text-davinci-003",
+    "model": "gpt-3.5-turbo",
     "max_tokens": 1500,
     "temperature": 0.9,
-    "top_p": 1,
 }

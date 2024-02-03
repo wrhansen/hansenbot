@@ -1,7 +1,11 @@
 import io
 import os
 
-import openai
+from openai import OpenAI
+
+OPEN_API_KEY = os.environ["OPENAI_KEY"]
+
+client = OpenAI(api_key=OPEN_API_KEY)
 import requests
 from dotenv import load_dotenv
 from PIL import Image
@@ -9,9 +13,6 @@ from resizeimage import resizeimage
 
 load_dotenv()
 
-OPEN_API_KEY = os.environ["OPENAI_KEY"]
-
-openai.api_key = OPEN_API_KEY
 
 # engines = openai.Engine.list()
 # print(engines)
@@ -29,27 +30,33 @@ CHAT_SETTINGS = {
 }
 
 # completion = openai.Completion.create(
-#     prompt="today is national what day?", **CHAT_SETTINGS
+#     prompt="Give me a patriotic quote from Donald Trump.", **CHAT_SETTINGS
 # )
-
 # print(completion)
 # print(completion["choices"][0]["text"])
 
+completion = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    max_tokens=1500,
+    temperature=0.9,
+    messages=[{"role": "user", "content": "Give me a new inspirational bible verse."}],
+)
+print(completion.choices[0].message.content)
+
 
 # Example of generating a image from a prompt
-response = openai.Image.create(
-    prompt="an armchair in the shape of an avocado",
-    n=1,
-    size="1024x1024",
-)
+# response = openai.Image.create(
+#     prompt="an armchair in the shape of an avocado",
+#     n=1,
+#     size="1024x1024",
+# )
 
-image_url = response["data"][0]["url"]
-print(f"Response: {response}")
-print(f"Image: {image_url}")
+# image_url = response["data"][0]["url"]
+# print(f"Response: {response}")
+# print(f"Image: {image_url}")
 
 
 def square_image(filename, save_copy=False):
-
     with open(filename, "r+b") as fp:
         with Image.open(fp) as image:
             if image.height != image.width:
@@ -130,5 +137,5 @@ def post_message(picture_url):
     print(response.json())
 
 
-picture_url = upload_image(image_url)
-post_message(picture_url)
+# picture_url = upload_image(image_url)
+# post_message(picture_url)
