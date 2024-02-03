@@ -75,7 +75,7 @@ in the right environment.
 ## AWS ElasticBeanstalk notes
 
 From project root on local machine:
-`eb shell hansenbot-env`
+`eb ssh hansenbot-env`
 
 Change to the current app directory
 `cd /var/app/current/`
