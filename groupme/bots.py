@@ -301,7 +301,7 @@ class OpenAICommandBot(GroupMeBot):
 
         client = OpenAI(api_key=settings.OPENAI_KEY)
 
-        completion = client.completions.create(
+        completion = client.chat.completions.create(
             messages=[{"role": "user", "content": prompt}], **settings.OPENAI_SETTINGS
         )
         answer = completion.choices[0].message.content
