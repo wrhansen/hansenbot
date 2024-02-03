@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+import logging
 import os
 
 import requests
@@ -21,16 +22,20 @@ from sentry_sdk.integrations.django import DjangoIntegration
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+logger = logging.getLogger(__name__)
+
+
 def strip_disallowed_host(event, hint):
     if "exc_info" in hint:
         errors_to_ignore = (DisallowedHost, SuspiciousOperation)
-        exc_type = hint["exc_info"][1]
-        import sys
+        _, exc_value, __ = hint["exc_info"]
 
-        sys.stdout.write(f"EXC_INFO:   {hint}")
+        logger.info(f"EXC_INFO:   {hint}")
 
-        if isinstance(exc_type, errors_to_ignore):
+        if isinstance(exc_value, errors_to_ignore):
             return None
+    else:
+        logger.info(f"NO EXC_INFO: {event} | {hint}")
 
     return event
 
