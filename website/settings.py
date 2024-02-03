@@ -31,11 +31,13 @@ def strip_disallowed_host(event, hint):
         _, exc_value, __ = hint["exc_info"]
 
         logger.info(f"EXC_INFO:   {hint}")
+        print(f"PRINT EXC_INFO: {hint}")
 
         if isinstance(exc_value, errors_to_ignore):
             return None
     else:
         logger.info(f"NO EXC_INFO: {event} | {hint}")
+        print(f"PRINT NO EXC_INFO: {event} | {hint}")
 
     return event
 
