@@ -95,10 +95,6 @@ your changes to master and a new build will automatically deploy to github. Neat
 ## Useful Links
 
 * GroupMe Developer Bots portal: https://dev.groupme.com/bots
-* Sentry Project Link: https://sentry.io/organizations/wesley-hansen/issues/?project=4504385264025600
 * Github Action used: https://github.com/einaregilsson/beanstalk-deploy
 
 # Changelog
-
-* **2023-03-13** - Attempting to fix ALLOWED_HOSTS error caused by the Elastic Beanstalk
-    load balancer. Found this as a possible solution here: https://stackoverflow.com/a/70037998/823656

@@ -14,9 +14,6 @@ import logging
 import os
 
 import requests
-import sentry_sdk
-from django.core.exceptions import DisallowedHost, SuspiciousOperation
-from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,29 +21,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 logger = logging.getLogger(__name__)
 
-
-def strip_disallowed_host(event, hint):
-    if "exc_info" in hint:
-        errors_to_ignore = (DisallowedHost, SuspiciousOperation)
-        _, exc_value, __ = hint["exc_info"]
-
-        logger.info(f"EXC_INFO:   {hint}")
-        print(f"PRINT EXC_INFO: {hint}")
-
-        if isinstance(exc_value, errors_to_ignore):
-            return None
-    else:
-        logger.info(f"NO EXC_INFO: {event} | {hint}")
-        print(f"PRINT NO EXC_INFO: {event} | {hint}")
-
-    return event
-
-
-sentry_sdk.init(
-    dsn=os.environ["SENTRY_DSN"],
-    integrations=[DjangoIntegration()],
-    before_send=strip_disallowed_host,
-)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
