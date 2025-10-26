@@ -97,4 +97,14 @@ your changes to master and a new build will automatically deploy to github. Neat
 * GroupMe Developer Bots portal: https://dev.groupme.com/bots
 * Github Action used: https://github.com/einaregilsson/beanstalk-deploy
 
+## Need to update the platform because it's been retired on AWS?
+
+Try using `eb config` command from cli. It will download a temp config file in an
+terminal editor that you can edit. Change the platform and any other thing you
+wanted to upgrade and then save and exit the editor. It will automatically kick
+off elastic beanstalk to update the platform.
+
+It might take several minutes (30 minutes to an hour even), but eventually it
+does upgrade the platform.
+
 # Changelog
