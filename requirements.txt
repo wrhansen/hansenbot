@@ -16,3 +16,6 @@ freezegun==1.0.0
 
 # OpenAI
 openai==1.10.0
+
+# Legacy support -- python3.13 got rid of cgi support
+legacy-cgi==2.6.3

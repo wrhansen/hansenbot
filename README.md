@@ -84,7 +84,7 @@ Activate the virtual env
 `source $(find /var/app/venv/*/bin/activate)`
 
 Load your environment variables
-`export $(sudo cat /opt/elasticbeanstalk/deployment/env | xargs)`
+`export $(/opt/elasticbeanstalk/bin/get-config --output YAML environment | sed -r 's/: /=/' | xargs)`
 
 Now you can run management commands
 `python manage.py shell`
